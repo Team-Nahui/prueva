@@ -1,0 +1,12 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de productos{% endblock %}
+{% block section %}
+    <h2>Descripcion: </h2>
+    <div id="oferta-detalle">
+        <p>Producto: </p>
+        <p>Fecha de inicio: </p>
+        <p>Fecha de finalizacion: </p>
+        <p>Precio de oferta: </p>
+        <p>Activo: {{ oferta.activo }}
+    </div>
+{% endblock %}

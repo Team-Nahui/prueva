@@ -20,6 +20,13 @@ class OfertaForm(forms.ModelForm):
     """
     class Meta:
         model = Oferta
+        fields ='__all__'
+        labels = {
+            'descripcion': 'Descripción',
+            'fechaInicio': 'Fecha de inicio',
+            'fechaFin': 'Fecha de fin',
+            'precioOferta': 'Precio de oferta',
+        }
         exclude = []
 
 

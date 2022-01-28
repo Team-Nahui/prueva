@@ -1,0 +1,51 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de Ofertas{% endblock %}
+{% block section %}
+    <h1>Oferta admin</h1>
+    <div>
+        <a href="{% url 'crear_oferta' %}">Crear Nueva Oferta</a>
+    </div>
+    <div>
+        <h3>Listado de Ofetas</h3>
+        <table class="default">
+            <tr>
+                <td>Id</td>
+                <td>Descripcion</td>
+                <td>Fecha de inicio</td>
+                <td>Fecha de finalizacion</td>
+                <td>Estado</td>
+                <td>Opcion 1</td>
+                <td>Opcion 2</td>
+            </tr>
+            <tr>
+                <td>01</td>
+                <td>Oferta de fin de anio del 15%</td>
+                <td>12/12/12</td>
+                <td>12/12/12</td>
+                <td> Activo </td>
+                <td><a href="{% url 'editar_oferta' pk=1 %}">Editar</a></td>
+                <td><a href="{% url 'oferta_detalle' pk=1 %}">ver</a></td>
+            </tr>
+            <tr>
+                <td>01</td>
+                <td>Oferta de fin de anio del 15%</td>
+                <td>12/12/12</td>
+                <td>12/12/12</td>
+                <td> Activo </td>
+                <td><a href="#">Editar</a></td>
+                <td><a href="#">Eliminar</a></td>
+            </tr>
+            {% for oferta in ofertas %}
+                <tr>
+                    <td>01</td>
+                    <td>Oferta de fin de anio del 15%</td>
+                    <td>12/12/12</td>
+                    <td>12/12/12</td>
+                    <td> Activo </td>
+                    <td><a href="#">Editar</a></td>
+                    <td><a href="#">Eliminar</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

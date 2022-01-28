@@ -1,0 +1,29 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de Ofertas{% endblock %}
+{% block section %}
+    <h1>Categoria admin</h1>
+    <div>
+        <a href="{% url 'crear_categoria' %}">Crear Nueva categoria</a>
+    </div>
+    <div>
+        <h3>Listado de Categorias</h3>
+        <table class="default">
+            <tr>
+                <td>Id</td>
+                <td>nombre</td>
+                <td>estado</td>
+                <td>Opcion 1</td>
+                <td>Opcion 2</td>
+            </tr>
+            {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria.id }}</td>
+                    <td>{{ categoria.nombre }}</td>
+                    <td>{{ categoria.activo }}</td>
+                    <td><a href="#">Editar</a></td>
+                    <td><a href="#">ver</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

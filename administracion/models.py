@@ -4,15 +4,13 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
-
-# Create your models here.
-
 class Localidad(models.Model):
     nombre = models.CharField(max_length=50)
     latitud = models.CharField(max_length=20)
     longitud = models.CharField(max_length=20)
     def __str__(self):
         return "%s " % (self.nombre)
+
 
 class Cliente(models.Model):
     nombres = models.CharField(max_length=50)
@@ -40,11 +38,13 @@ class Cliente(models.Model):
             ('is_repartidor', _('Es Repartidor')),
         )
 
+
 class Sancion(models.Model):
     fechaInicio = models.DateTimeField()
     fechaFin = models.DateTimeField()
     activo = models.BooleanField(blank=True,default=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+
 
 class Perfil(models.Model):
     PERFIL_EMP = (
@@ -58,14 +58,17 @@ class Perfil(models.Model):
     estado = models.BooleanField(blank=True,default=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
+
 # Create your models here.
 class Categoria(models.Model):
     nombre = models.CharField(max_length=40)
     imagen = models.ImageField(blank=True, upload_to='producto/categoria/%Y/%m/%d/%I/%M/%S/%p', default='producto/default.jpg')
     activo = models.BooleanField(default=True)
 
+
 class Tags(models.Model):
     nombre = models.CharField(max_length=40)
+
 
 class Producto(models.Model):
     TIPO_PRODUCTO = (
@@ -81,7 +84,7 @@ class Producto(models.Model):
     creadoEn = models.DateTimeField(auto_now_add=True)
     modificadoEn = models.DateTimeField(auto_now=True)
     activo = models.BooleanField(default=True)
-    #establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE)
+    # establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null = True)
     tags = models.ManyToManyField(Tags)
     puntuacion = models.IntegerField(default=0,null=True)
@@ -89,6 +92,7 @@ class Producto(models.Model):
     cantidad = models.IntegerField()
     def __str__(self):
         return '%s' % self.descripcion
+
 
 class Oferta(models.Model):
     descripcion = models.CharField(max_length=40)
@@ -98,10 +102,12 @@ class Oferta(models.Model):
     activo = models.BooleanField(blank=True,default=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
+
 class ProductoCliente(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     visita = models.IntegerField()
+
 
 class Pedido(models.Model):
     ESTADO_PEDIDO = (
@@ -151,6 +157,7 @@ class Pedido(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.hora_pedido, self.direccion, self.cliente)
 
+
 class Detalle_pedido(models.Model):
     cantidad = models.IntegerField()
     descripcion = models.TextField(null=True)
@@ -160,12 +167,14 @@ class Detalle_pedido(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.producto, self.pedido, self.cantidad)
 
+
 class Log_cambio_estado(models.Model):
     pendiente = models.DateTimeField(auto_now_add=True)
     visto = models.DateField(null=True)
     preparado = models.DateField(null=True)
     enviado = models.DateField(null=True)
     entregado = models.DateField(null=True)
+
 
 class Pedido_llamada(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

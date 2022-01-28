@@ -1,0 +1,19 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de productos{% endblock %}
+{% block section %}
+    <h2>Detalles del producto</h2>
+    <div id="producto-detalle">
+        <h3>Descripcion: {{ producto.descripcion }}</h3>
+        <img src="#" alt="foto de referencia del producto">
+        <p>Detalles: asdasd</p>
+        <p>Tipo: </p>
+        <p>Precio: S/. 10.00</p>
+        <p>precio de venta: S/. 12.00</p>
+        <p>Fecha de creacion: 12/12/12</p>
+        <p>Fecha de ultima modificacion: 12/12/12</p>
+        <p>Estado: activo</p>
+        <p>Categoria: Pan</p>
+        <p>Puntuacion: 4.5</p>
+        <p>Cantidad: 12 unds.</p>
+    </div>
+{% endblock %}
