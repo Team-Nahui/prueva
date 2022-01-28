@@ -86,6 +86,7 @@ class Producto(models.Model):
     tags = models.ManyToManyField(Tags)
     puntuacion = models.IntegerField(default=0,null=True)
     vista = models.CharField(max_length=100, default=0)
+    cantidad = models.IntegerField()
     def __str__(self):
         return '%s' % self.descripcion
 
@@ -137,7 +138,7 @@ class Pedido(models.Model):
     modificadoEn = models.DateTimeField(auto_now=True)
     total = models.CharField(null=True, max_length=20)
     precioDelivery = models.CharField(null=True, max_length=20)
-    player_id = models.CharField(null=True, max_length=100)
+    # player_id = models.CharField(null=True, max_length=100)
     tipoPago = models.CharField(null=True, max_length=20)
     tipoDocpago = models.IntegerField(choices=TIPODOC_PAGO, default=1)
     docPago = models.TextField(null=True)
@@ -169,3 +170,6 @@ class Log_cambio_estado(models.Model):
 class Pedido_llamada(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
+
+# class Lote(models.Model):
+    """Falta agregar campos"""

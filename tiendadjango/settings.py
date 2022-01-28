@@ -57,7 +57,7 @@ ROOT_URLCONF = 'tiendadjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,10 +80,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql_cymysql',
         'NAME': 'aes_tiendadjango',
-        'USER':'root',
-        'PASSWORD':'',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'USER': 'fabionm',
+        'PASSWORD': '12345',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
     }
 }
 
@@ -125,7 +125,7 @@ LOGIN_URL = '/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static/"),
     'static/',
 ]
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} First App {% endblock %}</title>
+</head>
+<body>
+    <h1>Panel de administracion</h1>
+    <nav>
+        <a href="{% url 'home_admin' %}">Home</a>
+        <a href="{% url 'listar_productos' %}">Productos</a>
+        <a href="#">Categorias</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Pedido</a>
+    </nav>
+    <hr>
+    <section>
+        <h3>{{ something }}</h3>
+        {% block section %} {% endblock %}
+    </section>
+    <hr>
+
+</body>
+</html>
