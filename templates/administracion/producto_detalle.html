@@ -5,15 +5,19 @@
     <div id="producto-detalle">
         <h3>Descripcion: {{ producto.descripcion }}</h3>
         <img src="#" alt="foto de referencia del producto">
-        <p>Detalles: asdasd</p>
-        <p>Tipo: </p>
-        <p>Precio: S/. 10.00</p>
-        <p>precio de venta: S/. 12.00</p>
-        <p>Fecha de creacion: 12/12/12</p>
-        <p>Fecha de ultima modificacion: 12/12/12</p>
-        <p>Estado: activo</p>
-        <p>Categoria: Pan</p>
-        <p>Puntuacion: 4.5</p>
-        <p>Cantidad: 12 unds.</p>
+        <p>{{ producto.dellates }}</p>
+        <p>Tipo: {{ producto.tipo }}</p>
+        <p>Precio: S/. {{ producto.precio }}</p>
+        <p>precio de venta: S/. {{ producto.precio_compra }}</p>
+        <p>Fecha de creacion: {{ producto.creadoEn }}</p>
+        <p>Fecha de ultima modificacion: {{ producto.modificadoEn }}</p>
+        {% if producto.activo is True %}
+            <p>Estado: Si</p>
+        {% else %}
+            <p>Estado: No</p>
+        {% endif %}
+        <p>Categoria: {{ producto.categoria }}</p>
+        <p>Puntuacion: {{ producto.categoria }}</p>
+        <p>Cantidad: {{ producto.cantidad }}.</p>
     </div>
 {% endblock %}

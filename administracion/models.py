@@ -65,9 +65,15 @@ class Categoria(models.Model):
     imagen = models.ImageField(blank=True, upload_to='producto/categoria/%Y/%m/%d/%I/%M/%S/%p', default='producto/default.jpg')
     activo = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f'{self.nombre}'
+
 
 class Tags(models.Model):
     nombre = models.CharField(max_length=40)
+
+    def __str__(self):
+        return f'{self.nombre}'
 
 
 class Producto(models.Model):

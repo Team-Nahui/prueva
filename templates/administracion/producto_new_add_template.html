@@ -1,13 +1,17 @@
 {% extends 'administracion/admin_home.html'%}
 {% block title %}Panel de administracion de productos{% endblock %}
 {% block section %}
-    <h1>Crear Producto</h1>
+    {%  if state == 'create' %}
+        <h1>Crear Producto</h1>
+    {% else %}
+        <h1>Editar Producto</h1>
+    {% endif %}
     {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button>Agregar producto</button>
+            <button>{{ button_text }}</button>
         </div>
     </form>
 {% endblock %}

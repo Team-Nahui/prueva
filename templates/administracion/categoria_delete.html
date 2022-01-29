@@ -1,0 +1,12 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Eliminar Categoría{% endblock %}
+{% block section %}
+    <h2>Eliminar Categoría</h2>
+    <div id="categoria-delete">
+        <form method="post">
+            {% csrf_token %}
+            <p>¿Estas seguro de eliminar el categoría: {{ categoria.nombre }}?</p>
+            <button type="submit">Si, confirmar</button>
+        </form>
+    </div>
+{% endblock %}

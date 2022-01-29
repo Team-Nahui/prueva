@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.views import View
 from .models import Producto, Oferta, Categoria
@@ -23,7 +22,9 @@ class CreateProductoView(View):
         form = ProductoForm
         context = {
             'form': form,
-            'message': ''
+            'message': '',
+            'state': 'create',
+            'button_text': 'Agregar',
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
@@ -34,14 +35,14 @@ class CreateProductoView(View):
         :return: HttpResponse
         """
         success_messages = ''
-        form = ProductoForm()
+        form = ProductoForm(request.POST)
         if form.is_valid():
-            new_producto = form.save()  # Guarda el objeto producto y me lo devuelves
+            form.save()  # Guarda el objeto producto y me lo devuelves
             form = ProductoForm()
-            success_messages = 'Guardado con exito!'
+            success_messages = 'Producto creado con exito!'
         context = {
             'form': form,
-            'message': success_messages
+            'message': success_messages,
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
@@ -49,10 +50,30 @@ class CreateProductoView(View):
 class EditProductoView(View):
     def get(self, request, pk):
         # llenamos los campos del formulario producto  con los datos del producto seleccionado
-        form = ProductoForm()
+        producto = get_object_or_404(Producto, id=pk)
+        # form = ProductoForm(initial={
+        #     'descripcion': producto.descripcion,
+        #     'cantidad': producto.cantidad,
+        # })
+        form = ProductoForm(instance=producto)
         context = {
             'form': form,
-            'message': ''
+            'message': '',
+            'state': 'edit',
+            'button_text': 'Guardar cambios'
+        }
+        return render(request, 'administracion/producto_new_add_template.html', context)
+
+    def post(self, request, pk):
+        success_message = ''
+        producto = get_object_or_404(Producto, id=pk)
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            success_message = 'Actualizacion guardado con exito'
+        context = {
+            'form': form,
+            'message': success_message,
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
@@ -62,11 +83,23 @@ class ProductoDetailView(View):
         """
          Muestra todos los datos del producto
          """
-        # producto = Producto.objects.filter(pk=pk)
         contex = {
-            'producto': {'id': 1, 'descripcion': ' Pan integral'}
+            'producto': get_object_or_404(Producto, id=pk)
         }
         return render(request, 'administracion/producto_detalle.html', contex)
+
+
+class ProductoDeleteView(View):
+    def get(self, request, pk):
+        producto = get_object_or_404(Producto, id=pk)
+        context = {
+            'producto': producto
+        }
+        return render(request, 'administracion/producto_delete.html', context)
+
+    def post(self, request, pk):
+        get_object_or_404(Producto, id=pk).delete()
+        return redirect('listar_productos')
 
 
 class OfertaListView(View):
@@ -123,7 +156,7 @@ class EditOfertaView(View):
             'form': form,
             'message': '',
             'state': 'edit',
-            'button_text': 'Guardar Canbios',
+            'button_text': 'Guardar Canmbios',
         }
         return render(request, 'administracion/new_oferta_template.html', context)
 
@@ -171,7 +204,9 @@ class CategoriaCreateView(View):
         form = CategoriaForm()
         context = {
             'form': form,
-            'message': ''
+            'message': '',
+            'state': 'create',
+            'button_text': 'Agregar',
         }
         return render(request, 'administracion/categoria_create.html', context)
 
@@ -193,6 +228,63 @@ class CategoriaCreateView(View):
         return render(request, 'administracion/categoria_create.html', context)
 
 
+class CategoriaEditView(View):
+    def get(self, request, pk):
+        """ Muestra el formulario para categoria"""
+        form = CategoriaForm(instance=get_object_or_404(Categoria, id=pk))
+        context = {
+            'form': form,
+            'message': '',
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/categoria_create.html', context)
+
+    def post(self, request, pk):
+        """
+        Edita una categoria y lo guarda
+        """
+        success_message = ''
+        categoria = get_object_or_404(Categoria, id=pk)
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            success_message = 'Actualizacion cuardado con exito'
+
+        context = {
+            'form': form,
+            'message': success_message,
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/categoria_create.html', context)
+
+
+class CagetgoriaDetailView(View):
+    def get(self, request, pk):
+        """
+        muesta todos los campos de categoria
+        """
+        categoria = get_object_or_404(Categoria, id=pk)
+        context = {
+            'categoria': categoria
+        }
+        return render(request, 'administracion/categoria_detail.html', context)
+
+
+class CategoriaDeleteView(View):
+    def get(self, request, pk):
+        categoria = get_object_or_404(Categoria, id=pk)
+        context = {
+            'categoria': categoria
+        }
+        return render(request, 'administracion/categoria_delete.html', context)
+
+    def post(self, request, pk):
+        get_object_or_404(Categoria, id=pk).delete()
+        return redirect('listar_categoria')
+
+
 class HomeView(View):
     def get(self, request):
         """
@@ -201,6 +293,6 @@ class HomeView(View):
         :return: HttpResponse
         """
         context = {
-            'something': 'Algo que mostrar en el Home del panel de administracion'
+            'something': 'Algo que mostrar en el Home del panel de administracion',
         }
         return render(request, 'administracion/admin_home.html', context)

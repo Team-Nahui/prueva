@@ -1,0 +1,12 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Eliminar Producto{% endblock %}
+{% block section %}
+    <h2>Detalles del producto</h2>
+    <div id="producto-detalle">
+        <form method="post">
+            {% csrf_token %}
+            <p>¿Estas seguro de eliminar el producto: {{ producto.descripcion }}?</p>
+            <button type="submit">Si, confirmar</button>
+        </form>
+    </div>
+{% endblock %}

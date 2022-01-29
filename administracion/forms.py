@@ -8,9 +8,9 @@ class ProductoForm(forms.ModelForm):
     """
     Formulario para el modelo Producto
     """
-
     class Meta:
         model = Producto
+        fields = '__all__'
         exclude = []
 
 

@@ -1,0 +1,14 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de productos{% endblock %}
+{% block section %}
+    <h2>Detalles de la Categoría</h2>
+    <div id="categoria-detalle">
+        <h3>Nombre: {{ categoria.nombre }}</h3>
+        <img src="#" alt="foto de referencia de la categoria">
+        {% if categoria.activo is True %}
+            <p>Activo: Si</p>
+        {% else %}
+            <p>Activo: No</p>
+        {% endif %}
+    </div>
+{% endblock %}
