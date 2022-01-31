@@ -5,6 +5,14 @@ from .models import Producto, Oferta, Categoria, Pedido
 from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm
 
 
+class pruebaView(View):
+
+    def get(self, request):
+        context = {
+            'productos': Producto.objects.all(),
+        }
+        return render(request, 'administracion/ejemplo_extendBase.html', context)
+
 class ProductoListView(View):
 
     def get(self, request):

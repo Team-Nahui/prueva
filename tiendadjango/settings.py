@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql_cymysql',
         'NAME': 'aes_tiendadjango',
-        'USER': 'fabionm',
-        'PASSWORD': '12345',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306'
     }
