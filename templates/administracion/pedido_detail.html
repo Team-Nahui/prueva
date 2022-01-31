@@ -1,0 +1,35 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de Pedidos{% endblock %}
+{% block section %}
+    <h2>Detalles del Pedido</h2>
+    <div id="dedido-detalle">
+        <h3>Fecha del Pedido: {{ pedido.hora_pedido }}</h3>
+        <p>Codigo de tranzaccion: {{ pedido.codigo_transaccion }}</p>
+        {% if pedido.pagado is True %}
+            <td>Si</td>
+        {% else %}
+            <td><p>No</p></td>
+        {% endif %}
+        <p>Latitud: {{ pedido.latitud }}</p>
+        <p>Longitud: {{ pedido.longitud }}</p>
+        <p>Latitud de origen: {{ pedido.latido_origen }}</p>
+        <p>Longitud de origen: {{ pedido.longitud_origen }}</p>
+        <p>Dirección: {{ pedido.direccion }}</p>
+        <p>Telefono: {{ pedido.telefono }}</p>
+        <p>Evaluación: {{ pedido.evalicacion }}.</p>
+        <p>Estado: {{ pedido.estado }}</p>
+        <p>Fecha de creación: {{ pedido.creadoEn }}</p>
+        <p>Fecha de modificación: {{ pedido.modificadoEn }}</p>
+        <p>Total: {{ pedido.total }}</p>
+        <p>Precio del delivery: {{ pedido.precioDelivery}}</p>
+        <p>Tipo de pago: {{ pedido.tipoPago }}</p>
+        <p>Tipo de documento de pago: {{ pedido.tipoDocpago }}</p>
+        <p>Documento de pago: {{ pedido.docPago }}</p>
+        <p>Productos: {{ pedido.productos }}</p>
+        {% if pedido.activo is True %}
+            <p>Si</p>
+        {% else %}
+            <p>No</p>
+        {% endif %}
+    </div>
+{% endblock %}

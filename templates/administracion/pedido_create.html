@@ -1,0 +1,17 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Panel de administracion de Pedidos{% endblock %}
+{% block section %}
+    {%  if state == 'create' %}
+        <h1>Crear Pedido</h1>
+    {% else %}
+        <h1>Editar Pedido</h1>
+    {% endif %}
+    {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button>{{ button_text }}</button>
+        </div>
+    </form>
+{% endblock %}

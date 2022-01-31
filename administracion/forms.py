@@ -20,10 +20,11 @@ class OfertaForm(forms.ModelForm):
     """
     class Meta:
         model = Oferta
-        fields ='__all__'
-        widgets = [
-            
-        ]
+        fields = '__all__'
+        widgets = {
+            'fechaInicio': forms.DateTimeInput,
+            'fechaFin': forms.DateTimeInput,
+        }
         labels = {
             'descripcion': 'Descripción',
             'fechaInicio': 'Fecha de inicio',
@@ -39,6 +40,7 @@ class PedidoForm(forms.ModelForm):
     """
     class Meta:
         model = Pedido
+        fields = '__all__'
         exclude = []
 
 

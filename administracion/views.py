@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.views import View
-from .models import Producto, Oferta, Categoria
-from .forms import ProductoForm, OfertaForm, CategoriaForm
+from .models import Producto, Oferta, Categoria, Pedido
+from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm
 
 
 class ProductoListView(View):
@@ -133,7 +133,7 @@ class CreateOfertaView(View):
         Crear una nueva oferta y muestra en mensaje
         """
         success_message = ''
-        form = OfertaForm()
+        form = OfertaForm(request.POST)
         if form.is_valid():
             form.save()
             form = OfertaForm()
@@ -152,8 +152,8 @@ class EditOfertaView(View):
         """
         Pinta el formulario con los datos de la oferta seleccionada
         """
-        # oferta = Oferta.objects.filter(pk=pk)
-        form = OfertaForm()
+        oferta = get_object_or_404(Oferta, id=pk)
+        form = OfertaForm(instance=oferta)
         context = {
             'form': form,
             'message': '',
@@ -164,14 +164,14 @@ class EditOfertaView(View):
 
     def post(self, request, pk):
         success_message = ''
-        oferta = Oferta.objects.filter(pk=pk)
-        form = OfertaForm(instance=oferta)
+        oferta = get_object_or_404(Oferta, id=pk)
+        form = OfertaForm(request.POST, instance=oferta)
         if form.is_valid():
             form.save()
-            success_message = 'Modificación guardado con exito!'
+            success_message = 'Actualizacion guardado con exito'
         context = {
             'form': form,
-            'message': success_message
+            'message': success_message,
         }
         return render(request, 'administracion/oferta_create.html', context)
 
@@ -180,10 +180,7 @@ class OfertaDetailView(View):
     def get(self, request, pk):
         # oferta = Oferta.objects.filter(pk=pk)
         context = {
-            'oferta': {
-                'id': 1,
-                'activo': 'no',
-            }
+            'oferta': get_object_or_404(Oferta, id=pk),
         }
         return render(request, 'administracion/oferta_detalle.html', context)
 
@@ -285,6 +282,104 @@ class CategoriaDeleteView(View):
     def post(self, request, pk):
         get_object_or_404(Categoria, id=pk).delete()
         return redirect('listar_categoria')
+
+
+class PedidoListView(View):
+    def get(self, request):
+        context = {
+            'pedidos': Pedido.objects.all(),
+            'message': '',
+        }
+        return render(request, 'administracion/pedido_admin.html', context)
+
+
+class PedidoCreateView(View):
+    def get(self, request):
+        """ Muestra el formulario para pedido"""
+        form = PedidoForm()
+        context = {
+            'form': form,
+            'message': '',
+            'state': 'create',
+            'button_text': 'Agregar',
+        }
+        return render(request, 'administracion/pedido_create.html', context)
+
+    def post(self, request):
+        """
+        crear un pedido y lo guarda
+        """
+        success_message = ''
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = PedidoForm()
+            success_message = 'Pedido creado con exito'
+
+        context = {
+            'form': form,
+            'message': success_message,
+            'state': 'create',
+            'button_text': 'Agregar',
+        }
+        return render(request, 'administracion/pedido_create.html', context)
+
+
+class PedidoEditView(View):
+    def get(self, request, pk):
+        """ Muestra el formulario para categoria"""
+        form = PedidoForm(instance=get_object_or_404(Pedido, id=pk))
+        context = {
+            'form': form,
+            'message': '',
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/pedido_create.html', context)
+
+    def post(self, request, pk):
+        """
+        Edita una categoria y lo guarda
+        """
+        success_message = ''
+        pedido = get_object_or_404(Pedido, id=pk)
+        form = PedidoForm(request.POST, instance=pedido)
+        if form.is_valid():
+            form.save()
+            success_message = 'Cambios cuardado con exito'
+
+        context = {
+            'form': form,
+            'message': success_message,
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/pedido_create.html', context)
+
+
+class PedidoDetailView(View):
+    def get(self, request, pk):
+        """
+        Muestra los datos del pedido
+        """
+        pedido  = get_object_or_404(Pedido, id=pk)
+        context = {
+            'pedido': pedido,
+        }
+        return render(request, 'administracion/pedido_detail.html', context)
+
+
+class PedidoDeleteView(View):
+    def get(self, request, pk):
+        pedido = get_object_or_404(Pedido, id=pk)
+        context = {
+            'pedido': pedido
+        }
+        return render(request, 'administracion/pedido_delete.html', context)
+
+    def post(self, request, pk):
+        get_object_or_404(Pedido, id=pk).delete()
+        return redirect('listar_pedido')
 
 
 class HomeView(View):

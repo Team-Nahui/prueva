@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-#from django.utils.translation import ugettext as _
+# from django.utils.translation import ugettext as _
 from django.utils.translation import gettext_lazy as _
 
 
@@ -8,6 +8,7 @@ class Localidad(models.Model):
     nombre = models.CharField(max_length=50)
     latitud = models.CharField(max_length=20)
     longitud = models.CharField(max_length=20)
+
     def __str__(self):
         return "%s " % (self.nombre)
 
@@ -95,7 +96,7 @@ class Producto(models.Model):
     tags = models.ManyToManyField(Tags)
     puntuacion = models.IntegerField(default=0,null=True)
     vista = models.CharField(max_length=100, default=0)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(null=True)
     def __str__(self):
         return '%s' % self.descripcion
 

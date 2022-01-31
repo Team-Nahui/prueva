@@ -1,0 +1,15 @@
+{% extends 'administracion/admin_home.html'%}
+{% block title %}Eliminar Oferta{% endblock %}
+{% block section %}
+    <h2>Eliminar Oferta</h2>
+    <div id="categoria-delete">
+        <form method="post">
+            {% csrf_token %}
+            <p>¿Estas seguro de eliminar el oferta: {{ oferta.descripcion }}?</p>
+            <button type="submit">Si, confirmar</button>
+            <a href="{% url 'listar_ofertas' %}">
+               <input type="button" value="Cancelar" />
+            </a>
+        </form>
+    </div>
+{% endblock %}

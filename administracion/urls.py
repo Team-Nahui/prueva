@@ -10,7 +10,7 @@ urlpatterns = [
     path('producto/', ProductoListView.as_view(), name='listar_productos'),
     path('producto/crear/', CreateProductoView.as_view(), name='crear_producto'),
     path('producto/editar/<int:pk>', EditProductoView.as_view(), name='editar_producto'),
-    path('producto/detalle/<int:pk>', ProductoDetailView.as_view(), name='producto_detalle'),
+    path('producto/detalle/<int:pk>', ProductoDetailView.as_view(), name='ver_producto'),
     path('producto/eliminar/<int:pk>', ProductoDeleteView.as_view(), name='eliminar_producto'),
 
     # Oferta Urls
@@ -24,7 +24,14 @@ urlpatterns = [
     path('categoria/crear/', CategoriaCreateView.as_view(), name='crear_categoria'),
     path('categoria/<int:pk>/editar/', CategoriaEditView.as_view(), name='editar_categoria'),
     path('categoria/<int:pk>/detalle/', CagetgoriaDetailView.as_view(), name='ver_categoria'),
-    path('categoria/<int:pk>/eliminar/', CategoriaDeleteView.as_view(), name='eliminar_categoria')
+    path('categoria/<int:pk>/eliminar/', CategoriaDeleteView.as_view(), name='eliminar_categoria'),
+
+    # Pedido urls
+    path('pedido/', PedidoListView.as_view(), name='listar_pedido'),
+    path('pedido/crear/', PedidoCreateView.as_view(), name='crear_pedido'),
+    path('pedido/<int:pk>/editar/', PedidoEditView.as_view(), name='editar_pedido'),
+    path('pedido/<int:pk>/ver/', PedidoDetailView.as_view(), name='ver_pedido'),
+    path('pedido/<int:pk>/eliminar/', PedidoDeleteView.as_view(), name='eliminar_pedido'),
 
 
 ]

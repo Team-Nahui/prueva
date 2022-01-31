@@ -19,7 +19,7 @@
                     <td>{{ producto.descripcion }}</td>
                     <td> s/. {{ producto.precio }} </td>
                     <td><a href="{% url 'editar_producto' pk=producto.pk %}">Editar</a></td>
-                    <td><a href="{% url 'producto_detalle' pk=producto.pk %}">ver</a></td>
+                    <td><a href="{% url 'ver_producto' pk=producto.pk %}">ver</a></td>
                     <td><a href="{% url 'eliminar_producto' pk=producto.pk %}">Eliminar</a></td>
                 </tr>
             {% endfor %}
