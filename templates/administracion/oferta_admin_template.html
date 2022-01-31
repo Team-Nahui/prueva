@@ -10,40 +10,26 @@
         <table class="default">
             <tr>
                 <td>Id</td>
-                <td>Descripcion</td>
+                <td>Descripción</td>
                 <td>Fecha de inicio</td>
-                <td>Fecha de finalizacion</td>
-                <td>Estado</td>
-                <td>Opcion 1</td>
-                <td>Opcion 2</td>
-            </tr>
-            <tr>
-                <td>01</td>
-                <td>Oferta de fin de anio del 15%</td>
-                <td>12/12/12</td>
-                <td>12/12/12</td>
-                <td> Activo </td>
-                <td><a href="{% url 'editar_oferta' pk=1 %}">Editar</a></td>
-                <td><a href="{% url 'oferta_detalle' pk=1 %}">ver</a></td>
-            </tr>
-            <tr>
-                <td>01</td>
-                <td>Oferta de fin de anio del 15%</td>
-                <td>12/12/12</td>
-                <td>12/12/12</td>
-                <td> Activo </td>
-                <td><a href="#">Editar</a></td>
-                <td><a href="#">Eliminar</a></td>
+                <td>Fecha de finalización</td>
+                <td>Activo</td>
             </tr>
             {% for oferta in ofertas %}
                 <tr>
-                    <td>01</td>
-                    <td>Oferta de fin de anio del 15%</td>
-                    <td>12/12/12</td>
-                    <td>12/12/12</td>
-                    <td> Activo </td>
-                    <td><a href="#">Editar</a></td>
-                    <td><a href="#">Eliminar</a></td>
+                <td>{{ oferta.id }}</td>
+                <td>{{ oferta.descripcion }}</td>
+                <td>{{ oferta.fechaInicio }}</td>
+                <td>{{ oferta.fechaFin }}</td>
+                    {% if oferta.activo  is True %}
+                        <td><p>Si</p> </td>
+                        {% else %}
+                        <td><p>No</p> </td>
+                    {% endif %}
+
+                <td><a href="{% url 'editar_oferta' pk=1 %}">Editar</a></td>
+                <td><a href="{% url 'oferta_detalle' pk=1 %}">ver</a></td>
+                <td><a href="#">Eliminar</a></td>
                 </tr>
             {% endfor %}
         </table>

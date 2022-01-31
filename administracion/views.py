@@ -119,14 +119,14 @@ class CreateOfertaView(View):
         """
         Muesta el formulario de Oferta
         """
-        form = OfertaForm
+        form = OfertaForm()
         context = {
             'form': form,
             'message': '',
             'state': 'create',
             'button_text': 'Crear Oferta',
         }
-        return render(request, 'administracion/new_oferta_template.html', context)
+        return render(request, 'administracion/oferta_create.html', context)
 
     def post(self, request):
         """
@@ -135,14 +135,16 @@ class CreateOfertaView(View):
         success_message = ''
         form = OfertaForm()
         if form.is_valid():
-            new_oferta = form.save()
+            form.save()
             form = OfertaForm()
             success_message = 'Guardado con exito!'
         contex = {
             'form': form,
-            'message': success_message
+            'message': success_message,
+            'state': 'create',
+            'button_text': 'Crear Oferta',
         }
-        return render(request, 'administracion/new_oferta_template.html', contex)
+        return render(request, 'administracion/oferta_create.html', contex)
 
 
 class EditOfertaView(View):
@@ -158,7 +160,7 @@ class EditOfertaView(View):
             'state': 'edit',
             'button_text': 'Guardar Canmbios',
         }
-        return render(request, 'administracion/new_oferta_template.html', context)
+        return render(request, 'administracion/oferta_create.html', context)
 
     def post(self, request, pk):
         success_message = ''
@@ -171,7 +173,7 @@ class EditOfertaView(View):
             'form': form,
             'message': success_message
         }
-        return render(request, 'administracion/new_oferta_template.html', context)
+        return render(request, 'administracion/oferta_create.html', context)
 
 
 class OfertaDetailView(View):

@@ -7,6 +7,9 @@
             {% csrf_token %}
             <p>¿Estas seguro de eliminar el categoría: {{ categoria.nombre }}?</p>
             <button type="submit">Si, confirmar</button>
+            <a href="{% url 'listar_categoria' %}">
+               <input type="button" value="Cancelar" />
+            </a>
         </form>
     </div>
 {% endblock %}

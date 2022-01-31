@@ -21,6 +21,9 @@ class OfertaForm(forms.ModelForm):
     class Meta:
         model = Oferta
         fields ='__all__'
+        widgets = [
+            
+        ]
         labels = {
             'descripcion': 'Descripción',
             'fechaInicio': 'Fecha de inicio',
