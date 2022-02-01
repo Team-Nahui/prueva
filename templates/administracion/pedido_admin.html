@@ -1,36 +1,71 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de Ofertas{% endblock %}
-{% block section %}
-    <h1>Pedido admin</h1>
+{% extends 'administracion/base.html'%}
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Panel de Administración de Pedido
+{% endblock %}
+
+{% block content%}
+	<h3 class="box-title">Tabla de Pedidos</h3>
     <div>
-        <a href="{% url 'crear_pedido' %}">Crear Nueva Pedido</a>
+        <a href="{% url 'crear_pedido' %}">
+            <input type="button" class="btn btn-primary" value="Crear pedido">
+        </a>
     </div>
-    <div>
-        <h3>Listado de Pedidos</h3>
-        <table class="default">
-            <tr>
-                <td>Id</td>
-                <td>Cliente</td>
-                <td>Estado</td>
-                <td>Fecha</td>
-                <td>Pagado</td>
-            </tr>
-            {% for pedido in pedidos %}
-                <tr>
-                <td>{{ pedido.id}}</td>
-                <td>{{ pedido.cliente }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>{{ pedido.hora_pedido }}</td>
-                    {% if pedido.pagado is True %}
-                        <td>Si</td>
-                    {% else %}
-                        <td><p>No</p></td>
-                    {% endif %}
-                <td><a href="{% url 'editar_pedido' pk=pedido.pk%}">Editar</a></td>
-                <td><a href="{% url 'ver_pedido' pk=pedido.pk %}">ver</a></td>
-                <td><a href="{% url 'eliminar_pedido' pk=pedido.pk %}">Eliminar</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+	<div class="table-responsive">
+	    <table class="table text-nowrap">
+	        <thead>
+	            <tr>
+	                <th class="border-top-0">Id</th>
+	                <th class="border-top-0">Cliente</th>
+	                <th class="border-top-0">Fecha</th>
+	                <th class="border-top-0">Estado</th>
+	                <th class="border-top-0">Pagado</th>
+	            </tr>
+	        </thead>
+
+	        <tbody>
+                {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.id}}</td>
+                        <td>{{ pedido.cliente }}</td>
+                        <td>{{ pedido.hora_pedido }}</td>
+                        <td>{{ pedido.estado }}</td>
+                            {% if pedido.pagado is True %}
+                                <td>Si</td>
+                            {% else %}
+                                <td><p>No</p></td>
+                            {% endif %}
+                        <td>
+                            <a href="#">
+                                <input class="btn btn-primary" type="button" value="Asignar">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'editar_pedido' pk=pedido.pk %}">
+                                <input class="btn btn-primary" type="button" value="Editar">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="">
+                                <input class="btn btn-info" type="button" value="Pagar">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'eliminar_pedido' pk=pedido.pk %}">
+                                <input type="button" class="btn btn-danger" value="Eliminar">
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+	        </tbody>
+	    </table>
+	</div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

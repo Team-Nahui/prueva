@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tienda',
-    'administracion'
+    'administracion',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql_cymysql',
         'NAME': 'aes_tiendadjango',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'fabionm',
+        'PASSWORD': '12345',
         'HOST': '127.0.0.1',
         'PORT': '3306'
     }

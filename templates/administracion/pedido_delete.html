@@ -1,15 +1,29 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Eliminar Pedido{% endblock %}
-{% block section %}
-    <h2>Eliminar Pedido</h2>
+
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Eliminar Pedido
+{% endblock %}
+
+
+{% block content%}
     <div id="categoria-delete">
         <form method="post">
             {% csrf_token %}
-            <p>¿Estas seguro de eliminar el Pedido: {{ pedido.hora_pedido }}?</p>
-            <button type="submit">Si, confirmar</button>
+            <p class="font-18">¿Estas seguro de eliminar el Pedido: {{ pedido.id }}?</p>
+            <button class="btn btn-danger" type="submit">Si, confirmar</button>
             <a href="{% url 'listar_pedido' %}">
-               <input type="button" value="Cancelar" />
+               <input class="btn btn-secondary" type="button" value="Cancelar" />
             </a>
         </form>
     </div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

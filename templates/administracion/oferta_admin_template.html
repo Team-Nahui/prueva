@@ -27,9 +27,9 @@
                         <td><p>No</p> </td>
                     {% endif %}
 
-                <td><a href="{% url 'editar_oferta' pk=1 %}">Editar</a></td>
-                <td><a href="{% url 'oferta_detalle' pk=1 %}">ver</a></td>
-                <td><a href="#">Eliminar</a></td>
+                <td><a href="{% url 'editar_pedido' pk=pedido.pk %}">Editar</a></td>
+                <td><a href="{% url 'ver_pedido' pk=pedido.pk %}">ver</a></td>
+                <td><a href="{% url 'eliminar_pedido' pk=pedido.pk %}">Eliminar</a></td>
                 </tr>
             {% endfor %}
         </table>

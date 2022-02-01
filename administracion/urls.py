@@ -29,11 +29,11 @@ urlpatterns = [
     # Pedido urls
     path('pedido/', PedidoListView.as_view(), name='listar_pedido'),
     path('pedido/crear/', PedidoCreateView.as_view(), name='crear_pedido'),
-    path('pedido/<int:pk>/editar/', PedidoEditView.as_view(), name='editar_pedido'),
+    path('pedido/<int:pk>/editar/', PedidoEditLocationView.as_view(), name='editar_pedido'),
     path('pedido/<int:pk>/ver/', PedidoDetailView.as_view(), name='ver_pedido'),
     path('pedido/<int:pk>/eliminar/', PedidoDeleteView.as_view(), name='eliminar_pedido'),
 
-    path('prueba/', pruebaView.as_view(), name = 'prueba'),
+    path('prueba/', pruebaView.as_view(), name='prueba'),
 
 
 ]

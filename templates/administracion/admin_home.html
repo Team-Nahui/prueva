@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %} First App {% endblock %}</title>
-</head>
-<body>
-    <h1>Panel de administracion</h1>
-    <nav>
-        <a href="{% url 'home_admin' %}">Home</a>
-        <a href="{% url 'listar_productos' %}">Productos</a>
-        <a href="{% url 'listar_categoria' %}">Categorias</a>
-        <a href="{% url 'listar_ofertas' %}">Ofertas</a>
-        <a href="{% url 'listar_pedido' %}">Pedido</a>
-    </nav>
-    <hr>
-    <section>
-        {{ if  }}
-        <h3>{{ something }}</h3>
-        {% block section %} {% endblock %}
-    </section>
-    <hr>
+{% extends 'administracion/base.html' %}
 
-</body>
-</html>
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page %}
+	Pagina de administracion
+{% endblock %}
+
+
+{% block content%}
+{#  esta seccion es de la pagina pricipal #}
+    <h3> {{ something }}</h3>
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}

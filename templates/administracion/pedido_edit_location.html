@@ -6,15 +6,10 @@
 
 
 {% block title_page%}
-    {%  if state == 'create' %}
-        Crear Pedido
-    {% else %}
-        Editar Pedido
-    {% endif %}
+    Editar Ubicación de Pedido
 {% endblock %}
 
 {% block content%}
-    {% if state == 'edit' %}
         <div>
             <a href="#">
                 <input class="btn btn-success" type="button" value="Marcar Ubicacion">
@@ -24,15 +19,15 @@
             </a>
         </div>
         <hr>
-
-    {% endif %}
-
     {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button class="btn btn-primary">{{ button_text }}</button>
+            <button class="btn btn-primary">Guardar cambios</button>
+            <a href="{% url 'listar_pedido' %}">
+                <input class="btn btn-secondary" type="button" value="Canlelar">
+            </a>
         </div>
     </form>
 {% endblock %}

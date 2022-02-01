@@ -42,6 +42,20 @@ class PedidoForm(forms.ModelForm):
         model = Pedido
         fields = '__all__'
         exclude = []
+        widgets = {}
+
+
+class PedidoEditLocationForm(forms.ModelForm):
+    """
+    Formulario para editar la localizacion del pedido
+    """
+    class Meta:
+        model = Pedido
+        fields = ['latitud', 'longitud']
+        widgets = {
+            'latitud': forms.TextInput(attrs={'class': 'form-control'}),
+            'longitud': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class CategoriaForm(forms.ModelForm):
