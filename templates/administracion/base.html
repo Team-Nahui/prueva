@@ -1,3 +1,4 @@
+{% load leaflet_tags %}
 <!DOCTYPE html>
 <html dir="ltr" lang="es">
 
@@ -20,8 +21,9 @@
 
     {#Imports de la libreria#}
    {% block import_head %}
-
     {% endblock %}
+    {% leaflet_js %}
+    {% leaflet_css %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -133,28 +135,24 @@
                         <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'listar_productos' %}"
                                 aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
                                 <span class="hide-menu">Producto</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'listar_ofertas' %}"
                                 aria-expanded="false">
-                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">Oferta</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'listar_categoria' %}"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
                                 <span class="hide-menu">Categoría</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'listar_pedido' %}"
                                 aria-expanded="false">
-                                <i class="fa fa-font" aria-hidden="true"></i>
                                 <span class="hide-menu">Pedidos</span>
                             </a>
                         </li>

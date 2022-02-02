@@ -42,7 +42,24 @@ class PedidoForm(forms.ModelForm):
         model = Pedido
         fields = '__all__'
         exclude = []
-        widgets = {}
+        widgets = {
+            'hora_pedido': forms.TextInput(attrs={'class': 'form-control'}),
+            'codigo_transaccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'latitud': forms.TextInput(attrs={'class': 'form-control'}),
+            'longitud': forms.TextInput(attrs={'class': 'form-control'}),
+            'latitud_origen': forms.TextInput(attrs={'class': 'form-control'}),
+            'longitud_origen': forms.TextInput(attrs={'class': 'form-control'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'evaluacion': forms.NumberInput(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
+            'total': forms.TextInput(attrs={'class': 'form-control'}),
+            'precioDelivery': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipoPago': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipoDocpago': forms.Select(attrs={'class': 'form-control'}),
+            'docPago': forms.Textarea(attrs={'class': 'form-control'}),
+            'cliente': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 
 class PedidoEditLocationForm(forms.ModelForm):
@@ -55,6 +72,20 @@ class PedidoEditLocationForm(forms.ModelForm):
         widgets = {
             'latitud': forms.TextInput(attrs={'class': 'form-control'}),
             'longitud': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class PedidoPayForm(forms.ModelForm):
+    """
+    Formulario para pagar el pedido
+    """
+    class Meta:
+        model = Pedido
+        fields = ['tipoPago', 'tipoDocpago', 'docPago']
+        widgets = {
+            'tipoPago': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipoDocpago': forms.Select(attrs={'class': 'form-control'}),
+            'docPago': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
 

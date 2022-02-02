@@ -33,6 +33,9 @@
         {{ form.as_p }}
         <div>
             <button class="btn btn-primary">{{ button_text }}</button>
+            <a href="{% url 'listar_pedido' %}">
+               <input class="btn btn-secondary" type="button" value="Cancelar" />
+            </a>
         </div>
     </form>
 {% endblock %}

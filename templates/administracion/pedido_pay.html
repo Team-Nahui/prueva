@@ -1,0 +1,28 @@
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Pagar Pedido
+{% endblock %}
+
+{% block content%}
+    {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button class="btn btn-primary">Pagar</button>
+            <a href="{% url 'listar_pedido' %}">
+                <input class="btn btn-secondary" type="button" value="Canlelar">
+            </a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}

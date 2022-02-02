@@ -1,6 +1,6 @@
 {% extends 'administracion/base.html'%}
+{% load leaflet_tags %}
 {% block import_head %}
-
 {% endblock %}
 
 
@@ -9,12 +9,13 @@
 {% endblock %}
 
 {% block content%}
-	<h3 class="box-title">Tabla de Pedidos</h3>
     <div>
         <a href="{% url 'crear_pedido' %}">
             <input type="button" class="btn btn-primary" value="Crear pedido">
         </a>
     </div>
+    {% leaflet_map "mapa_pedido" %}
+	<h3 class="box-title">Tabla de Pedidos</h3>
 	<div class="table-responsive">
 	    <table class="table text-nowrap">
 	        <thead>
@@ -24,6 +25,7 @@
 	                <th class="border-top-0">Fecha</th>
 	                <th class="border-top-0">Estado</th>
 	                <th class="border-top-0">Pagado</th>
+                    <th class="border-top-0">Opciones</th>
 	            </tr>
 	        </thead>
 
@@ -35,34 +37,57 @@
                         <td>{{ pedido.hora_pedido }}</td>
                         <td>{{ pedido.estado }}</td>
                             {% if pedido.pagado is True %}
-                                <td>Si</td>
+                                <td><p>Si</p></td>
                             {% else %}
                                 <td><p>No</p></td>
                             {% endif %}
                         <td>
-                            <a href="#">
-                                <input class="btn btn-primary" type="button" value="Asignar">
-                            </a>
+                            <!-- Button trigger modal -->
+                            <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                              Mostrar
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Opciones de Pedido</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a href="#">
+                                                <input class="btn btn-primary" type="button" value="Asignar">
+                                            </a>
+                                            <a href="{% url 'editar_pedido' pk=pedido.pk %}">
+                                                <input class="btn btn-primary" type="button" value="Editar">
+                                            </a>
+                                            <a href="{% url 'pagar_pedido' pk=pedido.pk %}">
+                                                <input class="btn btn-info" type="button" value="Pagar">
+                                            </a>
+                                            <a href="{% url 'eliminar_pedido' pk=pedido.pk %}">
+                                                <input type="button" class="btn btn-danger" value="Eliminar">
+                                            </a>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
-                        <td>
-                            <a href="{% url 'editar_pedido' pk=pedido.pk %}">
-                                <input class="btn btn-primary" type="button" value="Editar">
-                            </a>
-                        </td>
-                        <td>
-                            <a href="">
-                                <input class="btn btn-info" type="button" value="Pagar">
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'eliminar_pedido' pk=pedido.pk %}">
-                                <input type="button" class="btn btn-danger" value="Eliminar">
-                            </a>
-                        </td>
+
                     </tr>
+
                 {% endfor %}
 	        </tbody>
 	    </table>
+{#    <script type="text/javascript">#}
+{#        const buttonMostrar = document.querySelector("#button-mostrar");#}
+{#        buttonMostrar.addEventListener('click', pulsar);#}
+{#        function pulsar(){#}
+{#            console.log('Clic en boton mostrar')#}
+{#        }#}
+{#    </script>#}
 	</div>
 {% endblock %}
 

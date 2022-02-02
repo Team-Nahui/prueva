@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.views import View
 from .models import Producto, Oferta, Categoria, Pedido
-from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm
+from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, PedidoPayForm
 
 
 class pruebaView(View):
@@ -418,6 +418,34 @@ class PedidoEditLocationView(View):
             'message': success_message,
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
+
+
+class PedidoPayView(View):
+    def get(self, request, pk):
+        """ Muestra el formulario para categoria"""
+        form = PedidoPayForm(instance=get_object_or_404(Pedido, id=pk))
+        context = {
+            'form': form,
+            'message': '',
+        }
+        return render(request, 'administracion/pedido_pay.html', context)
+
+    def post(self, request, pk):
+        """
+        Edita una categoria y lo guarda
+        """
+        success_message = ''
+        pedido = get_object_or_404(Pedido, id=pk)
+        form = PedidoEditLocationForm(request.POST, instance=pedido)
+        if form.is_valid():
+            form.save()
+            success_message = 'Pedido pagado con éxito'
+
+        context = {
+            'form': form,
+            'message': success_message,
+        }
+        return render(request, 'administracion/pedido_pay', context)
 
 
 class HomeView(View):
