@@ -17,7 +17,8 @@ urlpatterns = [
     path('oferta/', OfertaListView.as_view(), name='listar_ofertas'),
     path('oferta/crear/', CreateOfertaView.as_view(), name='crear_oferta'),
     path('oferta/editar/<int:pk>', EditOfertaView.as_view(), name='editar_oferta'),
-    path('oferta/detalle/<int:pk>', OfertaDetailView.as_view(), name='oferta_detalle'),
+    path('oferta/detalle/<int:pk>', OfertaDetailView.as_view(), name='ver_oferta'),
+    path('oferta/<int:pk>/eliminar', OfertadeleteView.as_view(), name='eliminar_oferta'),
 
     # Categoria Urls
     path('categoria/', CategoriaListView.as_view(), name='listar_categoria'),

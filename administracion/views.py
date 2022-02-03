@@ -52,6 +52,8 @@ class CreateProductoView(View):
         context = {
             'form': form,
             'message': success_messages,
+            'state': 'create',
+            'button_text': 'Agregar',
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
@@ -83,6 +85,8 @@ class EditProductoView(View):
         context = {
             'form': form,
             'message': success_message,
+            'state': 'Edit',
+            'button_text': 'Guardar cambios',
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
@@ -181,6 +185,8 @@ class EditOfertaView(View):
         context = {
             'form': form,
             'message': success_message,
+            'state': 'edit',
+            'button_text': 'Guardar Canmbios',
         }
         return render(request, 'administracion/oferta_create.html', context)
 
@@ -192,6 +198,19 @@ class OfertaDetailView(View):
             'oferta': get_object_or_404(Oferta, id=pk),
         }
         return render(request, 'administracion/oferta_detalle.html', context)
+
+
+class OfertadeleteView(View):
+    def get(self, request, pk):
+        oferta = get_object_or_404(Oferta, id=pk)
+        context = {
+            'oferta': oferta
+        }
+        return render(request, 'administracion/oferta_delete.html', context)
+
+    def post(self, request, pk):
+        get_object_or_404(Pedido, id=pk).delete()
+        return redirect('listar_pedido')
 
 
 class CategoriaListView(View):
@@ -232,6 +251,8 @@ class CategoriaCreateView(View):
         context = {
             'form': form,
             'message': success_message,
+            'state': 'create',
+            'button_text': 'Agregar',
         }
         return render(request, 'administracion/categoria_create.html', context)
 

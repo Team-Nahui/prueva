@@ -1,23 +1,40 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de productos{% endblock %}
-{% block section %}
-    <h2>Detalles del producto</h2>
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Detalles del producto: {{ producto.id }}
+{% endblock %}
+
+
+{% block content%}
     <div id="producto-detalle">
-        <h3>Descripcion: {{ producto.descripcion }}</h3>
-        <img src="#" alt="foto de referencia del producto">
-        <p>{{ producto.dellates }}</p>
-        <p>Tipo: {{ producto.tipo }}</p>
-        <p>Precio: S/. {{ producto.precio }}</p>
-        <p>precio de venta: S/. {{ producto.precio_compra }}</p>
-        <p>Fecha de creacion: {{ producto.creadoEn }}</p>
-        <p>Fecha de ultima modificacion: {{ producto.modificadoEn }}</p>
+        <p style="text-align: left; font-size: large">Descripcion: <strong>{{ producto.descripcion }}</strong></p>
+        <img style="text-align: left; font-size: large" src="#" alt="foto de referencia del producto">
+        <p style="text-align: left; font-size: large"><strong>{{ producto.detalles }}</strong></p>
+        <p style="text-align: left; font-size: large"><strong>{{ producto.dellates }}</strong></p>
+        <p style="text-align: left; font-size: large">Tipo: <strong>{{ producto.tipo }}</strong></p>
+        <p style="text-align: left; font-size: large">Precio: <strong>S/. {{ producto.precio }}</strong></p>
+        <p style="text-align: left; font-size: large">precio de venta: <strong>S/. {{ producto.precio_compra }}</strong></p>
+        <p style="text-align: left; font-size: large">Fecha de creacion: <strong>{{ producto.creadoEn }}</strong></p>
+        <p style="text-align: left; font-size: large">Fecha de ultima modificacion: <strong>{{ producto.modificadoEn }}</strong></p>
         {% if producto.activo is True %}
-            <p>Estado: Si</p>
+            <p style="text-align: left; font-size: large">Estado: <strong>Si</strong></p>
         {% else %}
-            <p>Estado: No</p>
+            <p style="text-align: left; font-size: large">Estado: <strong>No</strong></p>
         {% endif %}
-        <p>Categoria: {{ producto.categoria }}</p>
-        <p>Puntuacion: {{ producto.categoria }}</p>
-        <p>Cantidad: {{ producto.cantidad }}.</p>
+        <p style="text-align: left; font-size: large">Categoria: <strong>{{ producto.categoria }}</strong></p>
+        <p style="text-align: left; font-size: large">Puntuacion: <strong>{{ producto.puntuacion }}</strong></p>
+        <p style="text-align: left; font-size: large">Cantidad: <strong>{{ producto.cantidad }}</strong></p>
+        <a href="{% url 'listar_productos' %}">
+            <input class="btn btn-primary" type="button" value="Volver">
+        </a>
     </div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

@@ -1,28 +1,74 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de productos{% endblock %}
-{% block section %}
-    <h1>Productos admin</h1>
-    <div>
-        <a href="{% url 'crear_producto' %}">Crear nuevo producto</a>
-    </div>
-    <div>
-        <h3>Lista de Productos</h3>
-        <table class="default">
-            <tr>
-                <td>Id</td>
-                <td>Descripcion</td>
-                <td>Precio</td>
-            </tr>
-            {% for producto in productos %}
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Panel de administración de productos
+{% endblock %}
+
+
+{% block content%}
+    <a href="{% url 'crear_producto' %}">
+        <input class="btn btn-primary" type="button" value="Agregar Nuevo">
+    </a>
+	<h3 class="box-title">Tabla de Productos</h3>
+	<div class="table-responsive">
+	    <table class="table text-nowrap">
+	        <thead>
+	            <tr>
+	                <th class="border-top-0">Id</th>
+	                <th class="border-top-0">Descripción</th>
+	                <th class="border-top-0">Precio</th>
+	                <th class="border-top-0">Opciones</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            {% for producto in productos %}
                 <tr>
                     <td>{{ producto.id }}</td>
                     <td>{{ producto.descripcion }}</td>
                     <td> s/. {{ producto.precio }} </td>
-                    <td><a href="{% url 'editar_producto' pk=producto.pk %}">Editar</a></td>
-                    <td><a href="{% url 'ver_producto' pk=producto.pk %}">ver</a></td>
-                    <td><a href="{% url 'eliminar_producto' pk=producto.pk %}">Eliminar</a></td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Mostrar
+                        </button>
+                    </td>
                 </tr>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Opciones de Pedido</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <a href="{% url 'editar_producto' pk=producto.pk %}">
+                                        <input class="btn btn-primary" type="button" value="Editar">
+                                    </a>
+                                    <a href="{% url 'ver_producto' pk=producto.pk %}">
+                                        <input class="btn btn-info" type="button" value="Ver">
+                                    </a>
+                                    <a href="{% url 'eliminar_producto' pk=producto.pk %}">
+                                        <input type="button" class="btn btn-danger" value="Eliminar">
+                                    </a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             {% endfor %}
-        </table>
-    </div>
+	        </tbody>
+	    </table>
+	</div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

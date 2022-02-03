@@ -96,7 +96,8 @@ class Producto(models.Model):
     tags = models.ManyToManyField(Tags)
     puntuacion = models.IntegerField(default=0,null=True)
     vista = models.CharField(max_length=100, default=0)
-    cantidad = models.IntegerField(null=True)
+    cantidad = models.IntegerField(default=0, null=True)
+
     def __str__(self):
         return '%s' % self.descripcion
 

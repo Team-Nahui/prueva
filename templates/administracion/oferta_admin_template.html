@@ -1,37 +1,83 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de Ofertas{% endblock %}
-{% block section %}
-    <h1>Oferta admin</h1>
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Panel de administración de Ofertas
+{% endblock %}
+
+
+{% block content%}
     <div>
-        <a href="{% url 'crear_oferta' %}">Crear Nueva Oferta</a>
+        <a href="{% url 'crear_oferta' %}">
+            <input type="button" class="btn btn-primary" value="Crear Nueva Oferta">
+        </a>
     </div>
-    <div>
-        <h3>Listado de Ofetas</h3>
-        <table class="default">
-            <tr>
-                <td>Id</td>
-                <td>Descripción</td>
-                <td>Fecha de inicio</td>
-                <td>Fecha de finalización</td>
-                <td>Activo</td>
-            </tr>
+	<h3 class="box-title">Tabla de Ofertas</h3>
+	<div class="table-responsive">
+	    <table class="table text-nowrap">
+	        <thead>
+	            <tr>
+	                <th class="border-top-0">Id</th>
+	                <th class="border-top-0">Descripción</th>
+	                <th class="border-top-0">Fecha de inicio</th>
+	                <th class="border-top-0">Fecha de finalización</th>
+	                <th class="border-top-0">Activo</th>
+                    <th class="border-top-0">Opciones</th>
+	            </tr>
+	        </thead>
+	        <tbody>
             {% for oferta in ofertas %}
                 <tr>
-                <td>{{ oferta.id }}</td>
-                <td>{{ oferta.descripcion }}</td>
-                <td>{{ oferta.fechaInicio }}</td>
-                <td>{{ oferta.fechaFin }}</td>
+                    <td>{{ oferta.id }}</td>
+                    <td>{{ oferta.descripcion }}</td>
+                    <td>{{ oferta.fechaInicio }}</td>
+                    <td>{{ oferta.fechaFin }}</td>
                     {% if oferta.activo  is True %}
                         <td><p>Si</p> </td>
-                        {% else %}
+                    {% else %}
                         <td><p>No</p> </td>
                     {% endif %}
+                    <td>
+                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Mostrar
+                        </button>
+                    </td>
 
-                <td><a href="{% url 'editar_pedido' pk=pedido.pk %}">Editar</a></td>
-                <td><a href="{% url 'ver_pedido' pk=pedido.pk %}">ver</a></td>
-                <td><a href="{% url 'eliminar_pedido' pk=pedido.pk %}">Eliminar</a></td>
                 </tr>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Opciones de Oferta</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <a href="{% url 'editar_oferta' pk=oferta.pk %}">
+                                        <input class="btn btn-primary" type="button" value="Editar">
+                                    </a>
+                                    <a href="{% url 'ver_oferta' pk=oferta.pk %}">
+                                        <input class="btn btn-info" type="button" value="Ver">
+                                    </a>
+                                    <a href="{% url 'eliminar_oferta' pk=oferta.pk %}">
+                                        <input type="button" class="btn btn-danger" value="Eliminar">
+                                    </a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
             {% endfor %}
-        </table>
-    </div>
+	        </tbody>
+	    </table>
+	</div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

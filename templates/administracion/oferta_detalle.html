@@ -1,12 +1,32 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de productos{% endblock %}
-{% block section %}
-    <h2>Descripcion: </h2>
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Detalle de Oferta: {{ oferta.id }}
+{% endblock %}
+
+
+{% block content%}
     <div id="oferta-detalle">
-        <p>Producto: </p>
-        <p>Fecha de inicio: </p>
-        <p>Fecha de finalizacion: </p>
-        <p>Precio de oferta: </p>
-        <p>Activo: {{ oferta.activo }}
+        <p style="text-align: left; font-size: large">Descripcion: <strong>{{ oferta.descripcion }}</strong> </p>
+        <p style="text-align: left; font-size: large">Fecha de inicio: <strong>{{ oferta.fechaInicio }}</strong></p>
+        <p style="text-align: left; font-size: large">Fecha de finalizacion: <strong>{{ oferta.fechaFin }}</strong> </p>
+        <p style="text-align: left; font-size: large">Precio de oferta: <strong>{{ oferta.precioOferta }}</strong></p>
+        {% if oferta.activo is True %}
+            <p style="text-align: left; font-size: large">Activo <strong>Si</strong></p>
+        {% else %}
+            <p style="text-align: left; font-size: large">Activo <strong>No</strong></p>
+        {% endif %}
+        <a href="{% url 'listar_ofertas' %}">
+            <input class="btn btn-primary" type="button" value="Volver">
+        </a>
     </div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

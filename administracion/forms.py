@@ -12,6 +12,19 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         fields = '__all__'
         exclude = []
+        widgets = {
+            'imagen': forms.FileInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'detalles': forms.Textarea(attrs={'class': 'form-control'}),
+            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'precio_compra': forms.NumberInput(attrs={'class': 'form-control'}),
+            'puntuacion': forms.NumberInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+            'vista': forms.NumberInput(attrs={'class': 'form-control'}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'tags': forms.SelectMultiple(attrs={'class': 'form-control'})
+        }
 
 
 class OfertaForm(forms.ModelForm):
@@ -22,8 +35,10 @@ class OfertaForm(forms.ModelForm):
         model = Oferta
         fields = '__all__'
         widgets = {
-            'fechaInicio': forms.DateTimeInput,
-            'fechaFin': forms.DateTimeInput,
+            'fechaInicio': forms.DateTimeInput(format=('%d-%m-%Y'), attrs={'type': 'date', 'class': 'form-control'}),
+            'fechaFin': forms.DateTimeInput(format=('%d-%m-%Y'), attrs={'type': 'date', 'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'precioOferta': forms.NumberInput(attrs={'class': 'form-control'})
         }
         labels = {
             'descripcion': 'Descripción',
@@ -93,3 +108,7 @@ class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
         exclude = []
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'imagen': forms.FileInput(attrs={'class': 'form-control'}),
+        }

@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'aes_tiendadjango',
         'USER': 'fabionm',
         'PASSWORD': '12345',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '3306'
     }
 }

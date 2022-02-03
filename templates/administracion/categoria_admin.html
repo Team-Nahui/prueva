@@ -1,19 +1,34 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de Categorías{% endblock %}
-{% block section %}
-    <h1>Categoria admin</h1>
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Panel de administracion de Categorías
+{% endblock %}
+
+
+{% block content%}
     <div>
-        <a href="{% url 'crear_categoria' %}">Crear Nueva categoría</a>
+        <a href="{% url 'crear_categoria' %}">
+            <input class="btn btn-primary" type="button" value="Crear una nueva Categoría">
+        </a>
     </div>
-    <div>
-        <h3>Listado de Categorias</h3>
-        <table class="default">
-            <tr>
-                <td>Id</td>
-                <td>Nombre</td>
-                <td>Activo</td>
-            </tr>
-            {% for categoria in categorias %}
+	<h3 class="box-title">Tabla de Categorías</h3>
+	<div class="table-responsive">
+	    <table class="table text-nowrap">
+	        <thead>
+	            <tr>
+	                <th class="border-top-0">ID</th>
+	                <th class="border-top-0">Nombre</th>
+	                <th class="border-top-0">Activo</th>
+	                <th class="border-top-0">Opciones</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            {% for categoria in categorias %}
                 <tr>
                     <td>{{ categoria.id }}</td>
                     <td>{{ categoria.nombre }}</td>
@@ -22,11 +37,45 @@
                     {% else %}
                         <td>No</td>
                     {% endif %}
-                    <td><a href="{% url 'editar_categoria' pk=categoria.pk %}">Editar</a></td>
-                    <td><a href="{% url 'ver_categoria' pk=categoria.pk %}">Ver</a></td>
-                    <td><a href="{% url 'eliminar_categoria' pk=categoria.pk %}">Eliminar</a></td>
+                    <td>
+                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Mostrar
+                        </button>
+                    </td>
+                    <!-- Button trigger modal -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Opciones de Categoría</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <a href="{% url 'editar_categoria' pk=categoria.pk %}">
+                                        <input class="btn btn-primary" type="button" value="Editar">
+                                    </a>
+                                    <a href="{% url 'ver_categoria' pk=categoria.pk %}">
+                                        <input class="btn btn-info" type="button" value="Ver">
+                                    </a>
+                                    <a href="{% url 'eliminar_categoria' pk=categoria.pk %}">
+                                        <input type="button" class="btn btn-danger" value="Eliminar">
+                                    </a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tr>
             {% endfor %}
-        </table>
-    </div>
+	        </tbody>
+	    </table>
+	</div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}

@@ -1,17 +1,33 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de Categorías{% endblock %}
-{% block section %}
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
     {%  if state == 'create' %}
-        <h1>Crear Categoría</h1>
+        Crear Categoría
     {% else %}
-        <h1>Editar Categoría</h1>
+        Editar Categoría
     {% endif %}
+{% endblock %}
+
+
+{% block content%}
     {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button>{{ button_text }}</button>
+            <button class="btn btn-primary">{{ button_text }}</button>
+            <a href="{% url 'listar_categoria' %}">
+               <input class="btn btn-secondary" type="button" value="Cancelar" />
+            </a>
         </div>
     </form>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}
