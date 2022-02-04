@@ -188,5 +188,23 @@ class Pedido_llamada(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
 
+
+class Operacion(models.Model):
+    TIPO_PAGO = (
+        (1,'Efectivo'),
+        (2, 'Electrónico'),
+        (3, 'Transferencia'),
+        (4, 'Otro'),
+    )
+    fecha = models.DateField(auto_now_add=True)
+    monto = models.FloatField(null=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    recivo_pago = models.FileField(blank=True, upload_to='recivo/%Y/%m/%d/', default='recivo/default.pdf')
+    tipo_pago = models.IntegerField(null=True, choices=TIPO_PAGO)
+    pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
+
 # class Lote(models.Model):
-    """Falta agregar campos"""
+#     """
+#     Falta agregar
+#     campos"""
+#     pass

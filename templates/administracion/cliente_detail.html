@@ -1,0 +1,31 @@
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Detalle de Cliente: {{ cliente.id }}
+{% endblock %}
+
+
+{% block content%}
+    <p style="text-align: left; font-size: large">Nombres y Apellidos: <strong>{{ cliente.nombres }} {{ cliente.apellidos }}</strong></p>
+    {% if cliente.activo is True %}
+        <p style="text-align: left; font-size: large">Activo: <strong>Si</strong></p>
+    {% else %}
+        <p style="text-align: left; font-size: large">Activo: <strong>No</strong></p>
+    {% endif %}
+    <p style="text-align: left; font-size: large">Direccion: <strong>{{ cliente.direccion }}</strong></p>
+    <p style="text-align: left; font-size: large">Telefono: <strong>{{ cliente.telefono }}</strong></p>
+    <p style="text-align: left; font-size: large">Documento: <strong>{{ cliente.documento }}</strong></p>
+    <p style="text-align: left; font-size: large">Codigo: <strong>{{ cliente.codigo }}</strong></p>
+    <a href="{% url 'editar_pedido' pk=pedido.pk %}">
+        <input class="btn btn-secondary" type="button" value="Volver">
+    </a>
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}

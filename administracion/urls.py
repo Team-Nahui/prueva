@@ -34,6 +34,7 @@ urlpatterns = [
     path('pedido/<int:pk>/ver/', PedidoDetailView.as_view(), name='ver_pedido'),
     path('pedido/<int:pk>/eliminar/', PedidoDeleteView.as_view(), name='eliminar_pedido'),
     path('pedido/<int:pk>/pagar/', PedidoPayView.as_view(), name='pagar_pedido'),
+    path('pedido/cliente/<int:pk>/ver', ClienteDetailView.as_view(), name='ver_cliente'),
 
     path('prueba/', pruebaView.as_view(), name='prueba'),
 

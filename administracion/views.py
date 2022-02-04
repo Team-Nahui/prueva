@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.views import View
-from .models import Producto, Oferta, Categoria, Pedido
-from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, PedidoPayForm
+from .models import Producto, Oferta, Categoria, Pedido, Cliente, Operacion
+from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm
 
 
 class pruebaView(View):
@@ -419,6 +419,7 @@ class PedidoEditLocationView(View):
         form = PedidoEditLocationForm(instance=get_object_or_404(Pedido, id=pk))
         context = {
             'form': form,
+            'pedido': get_object_or_404(Pedido, pk=pk),
             'message': '',
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
@@ -443,8 +444,11 @@ class PedidoEditLocationView(View):
 
 class PedidoPayView(View):
     def get(self, request, pk):
-        """ Muestra el formulario para categoria"""
-        form = PedidoPayForm(instance=get_object_or_404(Pedido, id=pk))
+        """ Muestra el formulario para registrar Operacion"""
+        pedido = get_object_or_404(Pedido, pk=pk)
+        operacion_aux = Operacion
+        operacion_aux.pedido = pedido.pk
+        form = OperacionForm(instance=operacion_aux)
         context = {
             'form': form,
             'message': '',
@@ -457,16 +461,29 @@ class PedidoPayView(View):
         """
         success_message = ''
         pedido = get_object_or_404(Pedido, id=pk)
-        form = PedidoEditLocationForm(request.POST, instance=pedido)
+        form = OperacionForm(request.POST)
         if form.is_valid():
             form.save()
-            success_message = 'Pedido pagado con éxito'
+            pedido.pagado = True
+            pedido.save()
+            success_message = 'Pedido pagado y Operacion guardado con éxito'
 
         context = {
             'form': form,
             'message': success_message,
         }
-        return render(request, 'administracion/pedido_pay', context)
+        return render(request, 'administracion/pedido_pay.html', context)
+
+
+class ClienteDetailView(View):
+    def get(self, request, pk):
+        pedido = get_object_or_404(Pedido, pk=pk)
+        cliente = pedido.cliente
+        context = {
+            'cliente': cliente,
+            'pedido': pedido,
+        }
+        return render(request, 'administracion/cliente_detail.html', context)
 
 
 class HomeView(View):

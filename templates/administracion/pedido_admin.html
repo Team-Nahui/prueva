@@ -43,7 +43,7 @@
                             {% endif %}
                         <td>
                             <!-- Button trigger modal -->
-                            <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button id="boton-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-db="{{ pedido.pk }}">
                               Mostrar
                             </button>
                             <!-- Modal -->
@@ -81,13 +81,25 @@
                 {% endfor %}
 	        </tbody>
 	    </table>
-{#    <script type="text/javascript">#}
-{#        const buttonMostrar = document.querySelector("#button-mostrar");#}
-{#        buttonMostrar.addEventListener('click', pulsar);#}
-{#        function pulsar(){#}
-{#            console.log('Clic en boton mostrar')#}
-{#        }#}
-{#    </script>#}
+    <script type="text/javascript">
+        const botonesMostrar = document.querySelectorAll("#boton-mostrar");
+        botonesMostrar.forEach(boton => {
+            boton.addEventListener('click', (event) => {
+                event.preventDefault();
+                if(buscarBoton() === true){
+                    console.log('Encontrado');
+                }else {
+                    console.log('No encontrado');
+                }
+            });
+        })
+        const buscarBoton = () =>{
+            const encontrado = false;
+            return encontrado;
+        }
+
+
+    </script>
 	</div>
 {% endblock %}
 
