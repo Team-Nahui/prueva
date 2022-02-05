@@ -117,11 +117,10 @@ class CategoriaForm(forms.ModelForm):
 class OperacionForm(forms.ModelForm):
     class Meta:
         model = Operacion
-        fields = '__all__'
+        exclude = ['pedido']
         widgets = {
             'usuario': forms.Select(attrs={'class': 'form-class'}),
             'monto': forms.NumberInput(attrs={'class': 'form-control'}),
             'recivo_pago': forms.FileInput(attrs={'class': 'form-control'}),
-            'tipo_pago': forms.Select(attrs={'class': 'form-control'}),
-            'pedido': forms.Select(attrs={'class': 'form-control'})
+            'tipo_pago': forms.Select(attrs={'class': 'form-control'})
         }

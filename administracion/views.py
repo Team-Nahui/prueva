@@ -445,10 +445,7 @@ class PedidoEditLocationView(View):
 class PedidoPayView(View):
     def get(self, request, pk):
         """ Muestra el formulario para registrar Operacion"""
-        pedido = get_object_or_404(Pedido, pk=pk)
-        operacion_aux = Operacion
-        operacion_aux.pedido = pedido.pk
-        form = OperacionForm(instance=operacion_aux)
+        form = OperacionForm()
         context = {
             'form': form,
             'message': '',
@@ -460,8 +457,10 @@ class PedidoPayView(View):
         Edita una categoria y lo guarda
         """
         success_message = ''
-        pedido = get_object_or_404(Pedido, id=pk)
-        form = OperacionForm(request.POST)
+        pedido = get_object_or_404(Pedido, pk=pk)
+        operacion_with_pedido = Operacion()
+        operacion_with_pedido.pedido = pedido
+        form = OperacionForm(request.POST, instance=operacion_with_pedido)
         if form.is_valid():
             form.save()
             pedido.pagado = True

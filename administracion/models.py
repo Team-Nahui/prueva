@@ -203,6 +203,9 @@ class Operacion(models.Model):
     tipo_pago = models.IntegerField(null=True, choices=TIPO_PAGO)
     pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'Fecha: {self.fecha} / Monto: {self.monto} / Pedido: #'
+
 # class Lote(models.Model):
 #     """
 #     Falta agregar

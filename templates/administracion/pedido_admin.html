@@ -14,7 +14,24 @@
             <input type="button" class="btn btn-primary" value="Crear pedido">
         </a>
     </div>
-    {% leaflet_map "mapa_pedido" %}
+    {% leaflet_map "mapa_pedido" callback="window.map_init_basic"%}
+    <style>
+
+        .leaflet-container {  /* all maps */
+            width:  100%;
+            height: 400px;
+        }
+
+        #specialbigmap {
+            height: 800px;
+        }
+
+        /* Resize the "display_raw" textbox */
+        .django-leaflet-raw-textarea {
+            width: 100%;
+        }
+
+    </style>
 	<h3 class="box-title">Tabla de Pedidos</h3>
 	<div class="table-responsive">
 	    <table class="table text-nowrap">
@@ -43,11 +60,11 @@
                             {% endif %}
                         <td>
                             <!-- Button trigger modal -->
-                            <button id="boton-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-db="{{ pedido.pk }}">
+                            <button id="boton-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ pedido.pk }}" data-db="{{ pedido.pk }}">
                               Mostrar
                             </button>
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal-{{ pedido.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -82,23 +99,9 @@
 	        </tbody>
 	    </table>
     <script type="text/javascript">
-        const botonesMostrar = document.querySelectorAll("#boton-mostrar");
-        botonesMostrar.forEach(boton => {
-            boton.addEventListener('click', (event) => {
-                event.preventDefault();
-                if(buscarBoton() === true){
-                    console.log('Encontrado');
-                }else {
-                    console.log('No encontrado');
-                }
-            });
-        })
-        const buscarBoton = () =>{
-            const encontrado = false;
-            return encontrado;
+        function  map_init_basic(map, options){
+            L.marker([6.0, 45.0]).addTo(map);
         }
-
-
     </script>
 	</div>
 {% endblock %}

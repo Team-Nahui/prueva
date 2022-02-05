@@ -10353,20 +10353,9 @@ File: scss
   font-size: 12px;
   color: #a1aab2; }
 
-.leaflet-container {  /* all maps */
-        width:  600px;
-        height: 400px;
+.leaflet-container-default {
+  main-height: 600px;
 }
-
-#specialbigmap {
-        height: 800px;
-}
-
-/* Resize the "display_raw" textbox */
-.django-leaflet-raw-textarea {
-        width: 100%;
-}
-
 /*
 Template Name: Admin Template
 Author: Wrappixel

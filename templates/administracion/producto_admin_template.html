@@ -33,13 +33,13 @@
                     <td> s/. {{ producto.precio }} </td>
                     <td>
                         <!-- Button trigger modal -->
-                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ producto.pk }}">
                             Mostrar
                         </button>
                     </td>
                 </tr>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal-{{ producto.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
