@@ -139,12 +139,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LEAFLET_CONFIG = {
     # conf here
-    'SPATIAL_EXTENT': (5.0, 44.0, 7.5, 46),
-    'DEFAULT_CENTER': (6.0, 45.0),
-    'DEFAULT_ZOOM': 16,
-    'MIN_ZOOM': 3,
+    # 'SPATIAL_EXTENT': (5.0, 44.0, 7.5, 46),
+    'DEFAULT_CENTER': (-13.15878, -74.22321),
+    # 'DEFAULT_ZOOM': 16,
+    'MIN_ZOOM': 2,
     'MAX_ZOOM': 18,
     'DEFAULT_PRECISION': 6,
-    'TILES': 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    'SCALE': 'both',
+    'MINIMAP': True,
+    'RESET_VIEW': True,
+    # 'TILES': 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    # 'SCALE': 'both',
+    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet'
 }

@@ -2,7 +2,7 @@
 {% load leaflet_tags %}
 {% block import_head %}
 {% endblock %}
-
+{% load static %}
 
 {% block title_page%}
     Panel de Administración de Pedido
@@ -14,7 +14,7 @@
             <input type="button" class="btn btn-primary" value="Crear pedido">
         </a>
     </div>
-    {% leaflet_map "mapa_pedido" callback="window.map_init_basic"%}
+        {% leaflet_map "mapa_pedido" callback="window.map_setup"%}
     <style>
 
         .leaflet-container {  /* all maps */
@@ -99,8 +99,37 @@
 	        </tbody>
 	    </table>
     <script type="text/javascript">
-        function  map_init_basic(map, options){
-            L.marker([6.0, 45.0]).addTo(map);
+
+        function  map_setup(map, options){
+            let grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution}),
+                streets   = L.tileLayer(mapboxUrl, {id: 'MapID', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
+
+           L.map('map', {
+                center: [39.73, -104.99],
+                zoom: 10,
+                layers: [grayscale, cities]
+            });
+            let personalIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            let marker1 = L.marker([-13.15878, -74.22321], {icon: personalIcon}).addTo(map);
+            marker1.bindTooltip("Pedido: <b>01</b>", {direction: 'top'}).openTooltip();
+
+            let marker2 = L.marker([-13.15878, -80.22321], {icon: personalIcon}).addTo(map);
+            marker2.bindTooltip("Pedido: <b>07</b>", {direction: 'top'}).openTooltip();
+
+            L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+                layers: 'nexrad-n0r-900913',
+                format: 'image/png',
+                transparent: true,
+                attribution: "Weather data © 2012 IEM Nexrad"
+            });
         }
     </script>
 	</div>
