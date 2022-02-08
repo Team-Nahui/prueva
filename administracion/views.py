@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Producto, Oferta, Categoria, Pedido, Cliente, Operacion
 from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm
+from .pedidosOnMap import PedidoLocation
 
 
 class pruebaView(View):
@@ -316,9 +317,11 @@ class CategoriaDeleteView(View):
 
 class PedidoListView(View):
     def get(self, request):
+        pedidos_map = PedidoLocation.get_list_pedidos()
         context = {
             'pedidos': Pedido.objects.all(),
             'message': '',
+            'pedidos_map': pedidos_map,
         }
         return render(request, 'administracion/pedido_admin.html', context)
 
@@ -417,6 +420,7 @@ class PedidoEditLocationView(View):
     def get(self, request, pk):
         """ Muestra el formulario para categoria"""
         form = PedidoEditLocationForm(instance=get_object_or_404(Pedido, id=pk))
+        # Agregamos la locacion del pedido a la lista de pedidos a mostrar en el map
         context = {
             'form': form,
             'pedido': get_object_or_404(Pedido, pk=pk),
@@ -472,6 +476,24 @@ class PedidoPayView(View):
             'message': success_message,
         }
         return render(request, 'administracion/pedido_pay.html', context)
+
+
+class LocationMarkeronMapView(View):
+    def get(self, request, pk):
+        """
+        Esta vista marca la peticion en el mapa
+        """
+        msg = ''
+        pedido_temp = PedidoLocation(pk, 12, 12)
+        if pedido_temp in PedidoLocation.get_list_pedidos():
+            print('Ya se registro este pedido')
+            return redirect('editar_pedido')
+
+        else:
+            print('Aun no se ha registrado, Registrando....')
+            new_pedido_onmap = pedido_temp
+            PedidoLocation.add_pedido(new_pedido_onmap)
+            return redirect('listar_pedido')
 
 
 class ClienteDetailView(View):

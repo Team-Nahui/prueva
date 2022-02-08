@@ -14,6 +14,13 @@
             <input type="button" class="btn btn-primary" value="Crear pedido">
         </a>
     </div>
+    <div>
+    <ul>
+    {% for athlete in pedidos_map %}
+        <li>{{ athlete.id }}</li>
+    {% endfor %}
+    </ul>
+    </div>
         {% leaflet_map "mapa_pedido" callback="window.map_setup"%}
     <style>
 
@@ -101,14 +108,6 @@
     <script type="text/javascript">
 
         function  map_setup(map, options){
-            let grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution}),
-                streets   = L.tileLayer(mapboxUrl, {id: 'MapID', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
-
-           L.map('map', {
-                center: [39.73, -104.99],
-                zoom: 10,
-                layers: [grayscale, cities]
-            });
             let personalIcon = new L.Icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -118,18 +117,17 @@
                 shadowSize: [41, 41]
             });
 
-            let marker1 = L.marker([-13.15878, -74.22321], {icon: personalIcon}).addTo(map);
-            marker1.bindTooltip("Pedido: <b>01</b>", {direction: 'top'}).openTooltip();
+            let pedidoLima = L.marker([-12.04318, -77.02824]).bindPopup('Pedido de <b>Lima</b>'),
+                pedidoArequipa    = L.marker([-16.39889, -71.535]).bindPopup('Pedido de <b>Arequipa</b>'),
+                pedidoTrulillo    = L.marker([-8.11599, -79.02998]).bindPopup('Pedido de <b>Trujillo</b>'),
+                pedidoChiclayo    = L.marker([-6.77137, -79.84088]).bindPopup('Pedido de <b>Chiclayo</b>');
 
-            let marker2 = L.marker([-13.15878, -80.22321], {icon: personalIcon}).addTo(map);
-            marker2.bindTooltip("Pedido: <b>07</b>", {direction: 'top'}).openTooltip();
+            let cities = L.layerGroup([pedidoLima, pedidoArequipa, pedidoTrulillo, pedidoChiclayo]);
 
-            L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-                layers: 'nexrad-n0r-900913',
-                format: 'image/png',
-                transparent: true,
-                attribution: "Weather data © 2012 IEM Nexrad"
-            });
+            let overlayMaps = {
+                'Cities': cities
+            }
+            L.control.layers(overlayMaps).addTo(map);
         }
     </script>
 	</div>

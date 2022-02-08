@@ -11,7 +11,7 @@
 
 {% block content%}
         <div>
-            <a href="#">
+            <a href="{% url 'marcar_pedido' pk=pedido.pk %}">
                 <input class="btn btn-success" type="button" value="Marcar Ubicacion">
             </a>
             <a href="{% url 'ver_cliente' pk=pedido.id %}">
