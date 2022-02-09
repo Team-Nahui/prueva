@@ -14,11 +14,19 @@ class PedidoLocation:
         return cls._pedidos
 
     @classmethod
-    def add_pedido(cls, pedido):
-        if pedido in cls._pedidos:
-            return f'EL pedido con id: {pedido.id} ya esta registrado'
+    def add_pedido(cls, new_pedido):
+        """
+        este metodo agrega un nuevo marcador, si ya existe el marcador en el mapa lo actualiza
+        """
+        founded = False
+        for pedido in cls._pedidos:
+            if pedido.id == new_pedido.id:
+                founded = True
+        if founded:
+            return f'EL pedido con id: {new_pedido.id} ya esta registrado'
         else:
-            cls._pedidos.append(pedido)
+            cls._pedidos.append(new_pedido)
+            return cls._pedidos
 
     @classmethod
     def print_pedidos_map(cls):
@@ -42,4 +50,16 @@ class PedidoLocation:
 
     def __str__(self):
         return f'Id: {self.id}, lat: {self.latitud}, long: {self.longitud}'
+
+    @classmethod
+    def list_to_json(cls):
+        data = []
+        json_list = {}
+        if len(cls._pedidos) > 0:
+            for pedido in cls._pedidos:
+                aux = {'id': pedido.id, 'lat': pedido.latitud, 'lng': pedido.longitud}
+                data.append(aux)
+            json_list = {'pedidos': data}
+
+        return json_list
 

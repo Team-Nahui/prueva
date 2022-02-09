@@ -4,6 +4,8 @@ from django.views import View
 from .models import Producto, Oferta, Categoria, Pedido, Cliente, Operacion
 from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm
 from .pedidosOnMap import PedidoLocation
+from django.urls import reverse
+import json
 
 
 class pruebaView(View):
@@ -317,11 +319,11 @@ class CategoriaDeleteView(View):
 
 class PedidoListView(View):
     def get(self, request):
-        pedidos_map = PedidoLocation.get_list_pedidos()
+        pedidos_map = PedidoLocation.list_to_json()
         context = {
             'pedidos': Pedido.objects.all(),
             'message': '',
-            'pedidos_map': pedidos_map,
+            'pedidos_map_json': json.dumps(pedidos_map, indent=len(pedidos_map))
         }
         return render(request, 'administracion/pedido_admin.html', context)
 
@@ -441,6 +443,7 @@ class PedidoEditLocationView(View):
 
         context = {
             'form': form,
+            'pedido': get_object_or_404(Pedido, pk=pk),
             'message': success_message,
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
@@ -484,15 +487,16 @@ class LocationMarkeronMapView(View):
         Esta vista marca la peticion en el mapa
         """
         msg = ''
-        pedido_temp = PedidoLocation(pk, 12, 12)
-        if pedido_temp in PedidoLocation.get_list_pedidos():
-            print('Ya se registro este pedido')
-            return redirect('editar_pedido')
-
+        pedido = get_object_or_404(Pedido, pk=pk)
+        pedido_to_map = PedidoLocation(pedido.pk, pedido.latitud, pedido.longitud)
+        pedidos_state = PedidoLocation.add_pedido(pedido_to_map)
+        if isinstance(pedidos_state, str):
+            """
+            Si ya esta registrado tambien se puede quitar o actualizar el marcador en el mapa
+            """
+            msg = pedidos_state  # No se agrego el pedido al mapa ya que esta marcado
+            return redirect(reverse('editar_pedido', args=[pk]))
         else:
-            print('Aun no se ha registrado, Registrando....')
-            new_pedido_onmap = pedido_temp
-            PedidoLocation.add_pedido(new_pedido_onmap)
             return redirect('listar_pedido')
 
 

@@ -26,7 +26,7 @@
 
         .leaflet-container {  /* all maps */
             width:  100%;
-            height: 400px;
+            height: 600px;
         }
 
         #specialbigmap {
@@ -117,15 +117,19 @@
                 shadowSize: [41, 41]
             });
 
-            let pedidoLima = L.marker([-12.04318, -77.02824]).bindPopup('Pedido de <b>Lima</b>'),
-                pedidoArequipa    = L.marker([-16.39889, -71.535]).bindPopup('Pedido de <b>Arequipa</b>'),
-                pedidoTrulillo    = L.marker([-8.11599, -79.02998]).bindPopup('Pedido de <b>Trujillo</b>'),
-                pedidoChiclayo    = L.marker([-6.77137, -79.84088]).bindPopup('Pedido de <b>Chiclayo</b>');
+            let list_pedidos_map = {{ pedidos_map_json|safe }}.pedidos;
 
-            let cities = L.layerGroup([pedidoLima, pedidoArequipa, pedidoTrulillo, pedidoChiclayo]);
+
+            let markers = []
+            list_pedidos_map.forEach(pedido => {
+                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`Pedido: <p>${pedido.id}</p>`))
+                console.log(`Pedido: ${pedido.id}: lat: ${pedido.lat}, lng: ${pedido.lng}`)
+            })
+
+            let pedidosMap = L.layerGroup(markers);
 
             let overlayMaps = {
-                'Cities': cities
+                'Pedidos': pedidosMap
             }
             L.control.layers(overlayMaps).addTo(map);
         }
