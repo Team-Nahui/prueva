@@ -7,6 +7,8 @@ from .pedidosOnMap import PedidoLocation
 from django.urls import reverse
 import json
 
+from .utilities import check_pedido_state, check_pedido_is_marked, get_hour_to_date
+
 
 class pruebaView(View):
 
@@ -397,7 +399,7 @@ class PedidoDetailView(View):
         """
         Muestra los datos del pedido
         """
-        pedido  = get_object_or_404(Pedido, id=pk)
+        pedido = get_object_or_404(Pedido, id=pk)
         context = {
             'pedido': pedido,
         }
@@ -488,16 +490,29 @@ class LocationMarkeronMapView(View):
         """
         msg = ''
         pedido = get_object_or_404(Pedido, pk=pk)
-        pedido_to_map = PedidoLocation(pedido.pk, pedido.latitud, pedido.longitud)
-        pedidos_state = PedidoLocation.add_pedido(pedido_to_map)
-        if isinstance(pedidos_state, str):
+        pedido_state = check_pedido_state(pedido)
+        if pedido_state:
             """
-            Si ya esta registrado tambien se puede quitar o actualizar el marcador en el mapa
+            El pedido esta con estado: Pendiente, ocurre dos casos:
+            1.- Ya este marcado en y se esta actualizando: Actualizar localizacion
+            2.- el pedido aun no este marcado: agregar a los marcadores o pedidos en seguimiento
             """
-            msg = pedidos_state  # No se agrego el pedido al mapa ya que esta marcado
-            return redirect(reverse('editar_pedido', args=[pk]))
-        else:
+            pedido_is_marked = check_pedido_is_marked(pedido)
+            cliente = pedido.cliente
+            pedido_to_marker = PedidoLocation(pedido.id,
+                                              pedido.latitud,
+                                              pedido.longitud,
+                                              get_hour_to_date(pedido.hora_pedido),
+                                              f'{cliente.nombres} {cliente.apellidos}',
+                                              cliente.telefono)
+            if pedido_is_marked:
+                msg = PedidoLocation.set_pedido_in_list(pedido_to_marker)
+            else:
+                msg = PedidoLocation.add_pedido(pedido_to_marker)
+            print(msg)
             return redirect('listar_pedido')
+        else:
+            return redirect('editar_pedido', pk)
 
 
 class ClienteDetailView(View):

@@ -1,13 +1,18 @@
 class PedidoLocation:
     """
+    los pedidos en el mapa solo seran los pedidos con estado pendiente
     Esta clase maneja los pedidos a mostrar en el mapa de localizacion de pedidos
     """
     _pedidos = []
 
-    def __init__(self, id_pedido, lat_pedido, long_pedido):
+    def __init__(self, id_pedido, lat_pedido, long_pedido, hora_pedido, cliente, contacto_cliente):
         self.id = id_pedido
         self.latitud = lat_pedido
         self.longitud = long_pedido
+        self.hora_pedido = hora_pedido
+        self.cliente = cliente,
+        self.contacto_cliente = contacto_cliente
+
 
     @classmethod
     def get_list_pedidos(cls):
@@ -18,31 +23,36 @@ class PedidoLocation:
         """
         este metodo agrega un nuevo marcador, si ya existe el marcador en el mapa lo actualiza
         """
-        founded = False
+        marked_onmap = False
         for pedido in cls._pedidos:
             if pedido.id == new_pedido.id:
-                founded = True
-        if founded:
-            return f'EL pedido con id: {new_pedido.id} ya esta registrado'
+                marked_onmap = True
+        if marked_onmap:
+            return 'actualizar'
         else:
             cls._pedidos.append(new_pedido)
-            return cls._pedidos
+            return 'agregado'
+
+
+    @classmethod
+    def set_pedido_in_list(cls, pedido):
+        """
+        Solo se actualiza la latitud y longitud, los otros campos no
+        """
+        for pedido_aux in cls._pedidos:
+            if pedido.id == pedido_aux.id:
+                pedido_aux.latitud = pedido.latitud
+                pedido_aux.longitud = pedido.longitud
+        return 'done'
+
 
     @classmethod
     def print_pedidos_map(cls):
-        print('Lista de pedidos')
         if len(cls._pedidos) == 0:
             print('No hay pedidos a mostrar en el mapa')
         else:
             for pedido in cls._pedidos:
                 print(f'Id: {pedido.id}, lat: {pedido.latitud}, long: {pedido.longitud}')
-
-    @classmethod
-    def remove_pedido(cls, pedido):
-        if pedido in cls._pedidos:
-            cls._pedidos.remove(pedido)
-        else:
-            return 'Pedido no esta en el mapa'
 
     @classmethod
     def list_peditos_to_empty(cls):
@@ -57,7 +67,13 @@ class PedidoLocation:
         json_list = {}
         if len(cls._pedidos) > 0:
             for pedido in cls._pedidos:
-                aux = {'id': pedido.id, 'lat': pedido.latitud, 'lng': pedido.longitud}
+                aux = {'id': pedido.id,
+                       'lat': pedido.latitud,
+                       'lng': pedido.longitud,
+                       'hora_pedido': pedido.hora_pedido,
+                       'cliente': pedido.cliente,
+                       'contacto_cliente': pedido.contacto_cliente
+                       }
                 data.append(aux)
             json_list = {'pedidos': data}
 

@@ -56,7 +56,7 @@ class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
         fields = '__all__'
-        exclude = []
+        exclude = ['cantidad']
         widgets = {
             'hora_pedido': forms.TextInput(attrs={'class': 'form-control'}),
             'codigo_transaccion': forms.TextInput(attrs={'class': 'form-control'}),

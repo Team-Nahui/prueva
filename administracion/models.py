@@ -167,7 +167,7 @@ class Pedido(models.Model):
 
 
 class Detalle_pedido(models.Model):
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(null=True)
     descripcion = models.TextField(null=True)
     producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='pedidos')
