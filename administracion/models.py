@@ -104,8 +104,8 @@ class Producto(models.Model):
 
 class Oferta(models.Model):
     descripcion = models.CharField(max_length=40)
-    fechaInicio = models.DateTimeField()
-    fechaFin = models.DateTimeField()
+    fechaInicio = models.DateTimeField(auto_now_add=False, auto_now=False, editable=True)
+    fechaFin = models.DateTimeField(auto_now_add=False,auto_now=False, editable=True)
     precioOferta = models.IntegerField()
     activo = models.BooleanField(blank=True,default=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

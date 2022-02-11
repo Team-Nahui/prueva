@@ -35,8 +35,12 @@ class OfertaForm(forms.ModelForm):
         model = Oferta
         fields = '__all__'
         widgets = {
-            'fechaInicio': forms.DateTimeInput(format=('%d-%m-%Y'), attrs={'type': 'date', 'class': 'form-control'}),
-            'fechaFin': forms.DateTimeInput(format=('%d-%m-%Y'), attrs={'type': 'date', 'class': 'form-control'}),
+            'fechaInicio': forms.DateTimeInput(attrs={
+                'class': 'form-control datetimepicker-input',
+                'data-target': '#datetimepicker1'}),
+            'fechaFin': forms.DateTimeInput(attrs={''
+                                                   'class': 'form-control datetimepicker-input',
+                                                   'data-target': '#datetimepicker1'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
             'precioOferta': forms.NumberInput(attrs={'class': 'form-control'})
         }

@@ -6,7 +6,7 @@ from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEd
 from .pedidosOnMap import PedidoLocation
 from django.urls import reverse
 import json
-
+from datetime import datetime
 from .utilities import check_pedido_state, check_pedido_is_marked, get_hour_to_date
 
 
@@ -172,6 +172,7 @@ class EditOfertaView(View):
         """
         oferta = get_object_or_404(Oferta, id=pk)
         form = OfertaForm(instance=oferta)
+
         context = {
             'form': form,
             'message': '',
@@ -485,9 +486,6 @@ class PedidoPayView(View):
 
 class LocationMarkeronMapView(View):
     def get(self, request, pk):
-        """
-        Esta vista marca la peticion en el mapa
-        """
         msg = ''
         pedido = get_object_or_404(Pedido, pk=pk)
         pedido_state = check_pedido_state(pedido)
@@ -506,10 +504,9 @@ class LocationMarkeronMapView(View):
                                               f'{cliente.nombres} {cliente.apellidos}',
                                               cliente.telefono)
             if pedido_is_marked:
-                msg = PedidoLocation.set_pedido_in_list(pedido_to_marker)
+                PedidoLocation.set_pedido_in_list(pedido_to_marker)
             else:
-                msg = PedidoLocation.add_pedido(pedido_to_marker)
-            print(msg)
+                PedidoLocation.add_pedido(pedido_to_marker)
             return redirect('listar_pedido')
         else:
             return redirect('editar_pedido', pk)
