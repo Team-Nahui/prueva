@@ -122,7 +122,8 @@
 
             let markers = []
             list_pedidos_map.forEach(pedido => {
-                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Hora: <strong>${pedido.hora_pedido}</strong> <br>
+                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Pedido: ${pedido.url_pedido} <br>
+                                                                                                    Hora: <strong>${pedido.hora_pedido}</strong> <br>
                                                                                                     Cliente: <strong>${pedido.cliente}</strong> <br>
                                                                                                     Contecto: <strong>${pedido.contacto_cliente}</strong></p>`))
                 console.log(`Pedido: ${pedido.id}: lat: ${pedido.lat}, lng: ${pedido.lng}`)

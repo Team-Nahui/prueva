@@ -1,0 +1,25 @@
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Detalles de Tag: {{ tag.id }}
+{% endblock %}
+
+
+{% block content%}
+    <div id="tag-detalle">
+        <p>Nombre: <strong>{{ tag.nombre }}</strong></p>
+        <a href="{% url 'listar_tags' %}">
+            <input type="button" class="btn btn-primary" value="Volver">
+        </a>
+    </div>
+
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}

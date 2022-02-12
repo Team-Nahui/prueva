@@ -1,13 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-# Create your views here.
 from django.views import View
-from .models import Producto, Oferta, Categoria, Pedido, Cliente, Operacion
-from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm
+from .models import Producto, Oferta, Categoria, Pedido, Operacion, Tags
+from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm, TagsForm
 from .pedidosOnMap import PedidoLocation
-from django.urls import reverse
-import json
-from datetime import datetime
 from .utilities import check_pedido_state, check_pedido_is_marked, get_hour_to_date
+import json
 
 
 class pruebaView(View):
@@ -497,12 +494,13 @@ class LocationMarkeronMapView(View):
             """
             pedido_is_marked = check_pedido_is_marked(pedido)
             cliente = pedido.cliente
+            pedido_url = f'<a href="pedido/{pedido.pk}/ver">Ver pedido<a/>'
             pedido_to_marker = PedidoLocation(pedido.id,
                                               pedido.latitud,
                                               pedido.longitud,
                                               get_hour_to_date(pedido.hora_pedido),
                                               f'{cliente.nombres} {cliente.apellidos}',
-                                              cliente.telefono)
+                                              cliente.telefono, pedido_url)
             if pedido_is_marked:
                 PedidoLocation.set_pedido_in_list(pedido_to_marker)
             else:
@@ -521,6 +519,109 @@ class ClienteDetailView(View):
             'pedido': pedido,
         }
         return render(request, 'administracion/cliente_detail.html', context)
+
+
+class TagsListView(View):
+    def get(self, request):
+        """
+        Esta vista lista los tags
+        """
+        tags = Tags.objects.all()
+        context = {
+            'tags': tags,
+            'message': ''
+        }
+        return render(request, 'administracion/tags_admin.html', context)
+
+
+class CreateTagsView(View):
+    def get(self, request):
+        """
+        Muesta el formulario de Oferta
+        """
+        form = TagsForm()
+        context = {
+            'form': form,
+            'message': '',
+            'state': 'create',
+            'button_text': 'Crear Tag',
+        }
+        return render(request, 'administracion/tags_create.html', context)
+
+    def post(self, request):
+        """
+        Crear una nueva oferta y muestra en mensaje
+        """
+        success_message = ''
+        form = TagsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = TagsForm()
+            success_message = 'Agregado con exito!'
+        contex = {
+            'form': form,
+            'message': success_message,
+            'state': 'create',
+            'button_text': 'Crear Tag',
+        }
+        return render(request, 'administracion/tags_create.html', contex)
+
+
+class EditTagsView(View):
+    def get(self, request, pk):
+        """ Muestra el formulario para categoria"""
+        form = TagsForm(instance=get_object_or_404(Tags, id=pk))
+        context = {
+            'form': form,
+            'message': '',
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/tags_create.html', context)
+
+    def post(self, request, pk):
+        """
+        Edita una categoria y lo guarda
+        """
+        success_message = ''
+        tag = get_object_or_404(Tags, id=pk)
+        form = TagsForm(request.POST, instance=tag)
+        if form.is_valid():
+            form.save()
+            success_message = 'Cambio cuardado con exito'
+
+        context = {
+            'form': form,
+            'message': success_message,
+            'state': 'edit',
+            'button_text': 'Guardar cambios',
+        }
+        return render(request, 'administracion/tags_create.html', context)
+
+
+class DetailTagsView(View):
+    def get(self, request, pk):
+        """
+        muesta todos los campos de categoria
+        """
+        tag = get_object_or_404(Tags, id=pk)
+        context = {
+            'tag': tag
+        }
+        return render(request, 'administracion/tags_detail.html', context)
+
+
+class DeleteTagsView(View):
+    def get(self, request, pk):
+        tag = get_object_or_404(Tags, id=pk)
+        context = {
+            'tag': tag,
+        }
+        return render(request, 'administracion/tags_delete.html', context)
+
+    def post(self, request, pk):
+        get_object_or_404(Tags, id=pk).delete()
+        return redirect('listar_tags')
 
 
 class HomeView(View):

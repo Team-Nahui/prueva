@@ -1,0 +1,92 @@
+{% extends 'administracion/base.html'%}
+{% load leaflet_tags %}
+{% block import_head %}
+{% endblock %}
+{% load static %}
+
+{% block title_page%}
+    Panel de Administración de Tags
+{% endblock %}
+
+{% block content%}
+    <div>
+        <a href="{% url 'crear_tag' %}">
+            <input type="button" class="btn btn-primary" value="Crear Nuevo Tag">
+        </a>
+    </div>
+	<h3 class="box-title">Tabla de Tags</h3>
+	<div class="table-responsive">
+	    <table class="table text-nowrap">
+	        <thead>
+	            <tr>
+	                <th class="border-top-0">Id</th>
+	                <th class="border-top-0">Nombre</th>
+	                <th class="border-top-0">Editar</th>
+	                <th class="border-top-0">Ver</th>
+	                <th class="border-top-0">Eliminar</th>
+	            </tr>
+	        </thead>
+
+	        <tbody>
+                {% for tag in tags %}
+                    <tr>
+                        <td>{{ tag.id}}</td>
+                        <td>{{ tag.nombre }}</td>
+                        <td>
+                            <a href="{% url 'editar_tag' pk=tag.pk %}">
+                                <input class="btn btn-primary" type="button" value="Editar">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'ver_tag' pk=tag.pk%}">
+                                <input class="btn btn-primary" type="button" value="Ver">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'eliminar_tag' pk=tag.pk %}">
+                                <input class="btn btn-danger" type="button" value="Eliminar">
+                            </a>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+	        </tbody>
+	    </table>
+    <script type="text/javascript">
+
+        function  map_setup(map, options){
+            let personalIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            let list_pedidos_map = {{ pedidos_map_json|safe }}.pedidos;
+
+
+            let markers = []
+            list_pedidos_map.forEach(pedido => {
+                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Hora: <strong>${pedido.hora_pedido}</strong> <br>
+                                                                                                    Cliente: <strong>${pedido.cliente}</strong> <br>
+                                                                                                    Contecto: <strong>${pedido.contacto_cliente}</strong></p>`))
+                console.log(`Pedido: ${pedido.id}: lat: ${pedido.lat}, lng: ${pedido.lng}`)
+            })
+
+            let pedidosMap = L.layerGroup(markers);
+
+            let overlayMaps = {
+                'Pedidos': pedidosMap
+            }
+            L.control.layers(overlayMaps).addTo(map);
+        }
+    </script>
+	</div>
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}

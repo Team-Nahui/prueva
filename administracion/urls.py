@@ -37,6 +37,12 @@ urlpatterns = [
     path('pedido/cliente/<int:pk>/ver', ClienteDetailView.as_view(), name='ver_cliente'),
     path('pedido/<int:pk>/marcar/', LocationMarkeronMapView.as_view(), name='marcar_pedido'),
 
+    path('tags/', TagsListView.as_view(), name='listar_tags'),
+    path('tags/crear/', CreateTagsView.as_view(), name='crear_tag'),
+    path('tags/<int:pk>/editar/', EditTagsView.as_view(), name='editar_tag'),
+    path('tags/<int:pk>/ver/', DetailTagsView.as_view(), name='ver_tag'),
+    path('tags/<int:pk>/eliminar/', DeleteTagsView.as_view(), name='eliminar_tag'),
+
     path('prueba/', pruebaView.as_view(), name='prueba'),
 
 

@@ -5,14 +5,14 @@ class PedidoLocation:
     """
     _pedidos = []
 
-    def __init__(self, id_pedido, lat_pedido, long_pedido, hora_pedido, cliente, contacto_cliente):
+    def __init__(self, id_pedido, lat_pedido, long_pedido, hora_pedido, cliente, contacto_cliente, pedido_url):
         self.id = id_pedido
         self.latitud = lat_pedido
         self.longitud = long_pedido
         self.hora_pedido = hora_pedido
         self.cliente = cliente,
         self.contacto_cliente = contacto_cliente
-
+        self.url_pedido = pedido_url
 
     @classmethod
     def get_list_pedidos(cls):
@@ -72,7 +72,8 @@ class PedidoLocation:
                        'lng': pedido.longitud,
                        'hora_pedido': pedido.hora_pedido,
                        'cliente': pedido.cliente,
-                       'contacto_cliente': pedido.contacto_cliente
+                       'contacto_cliente': pedido.contacto_cliente,
+                       'url': pedido.url_pedido,
                        }
                 data.append(aux)
             json_list = {'pedidos': data}

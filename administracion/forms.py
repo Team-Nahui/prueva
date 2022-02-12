@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Producto, Oferta, Categoria, Pedido, Operacion
+from .models import Producto, Oferta, Categoria, Pedido, Operacion, Tags
 
 
 class ProductoForm(forms.ModelForm):
@@ -10,8 +10,7 @@ class ProductoForm(forms.ModelForm):
     """
     class Meta:
         model = Producto
-        fields = '__all__'
-        exclude = []
+        exclude = ['puntuacion', 'vista']
         widgets = {
             'imagen': forms.FileInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
@@ -19,10 +18,8 @@ class ProductoForm(forms.ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-control'}),
             'precio': forms.NumberInput(attrs={'class': 'form-control'}),
             'precio_compra': forms.NumberInput(attrs={'class': 'form-control'}),
-            'puntuacion': forms.NumberInput(attrs={'class': 'form-control'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'vista': forms.NumberInput(attrs={'class': 'form-control'}),
-            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'categoria': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'tags': forms.SelectMultiple(attrs={'class': 'form-control'})
         }
 
@@ -127,4 +124,13 @@ class OperacionForm(forms.ModelForm):
             'monto': forms.NumberInput(attrs={'class': 'form-control'}),
             'recivo_pago': forms.FileInput(attrs={'class': 'form-control'}),
             'tipo_pago': forms.Select(attrs={'class': 'form-control'})
+        }
+
+
+class TagsForm(forms.ModelForm):
+    class Meta:
+        model = Tags
+        fields = '__all__'
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'})
         }

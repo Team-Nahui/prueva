@@ -82,7 +82,7 @@ class Producto(models.Model):
         ('comida', 'Comida'),
         ('noPerecible', 'No perecible')
     )
-    imagen = models.ImageField(blank=True, upload_to='producto/%Y/%m/%d/%I/%M/%S/%p', default='producto/default.jpg')
+    imagen = models.ImageField(blank=True, upload_to='producto/%Y/%m/%d/', default='producto/default.jpg')
     descripcion = models.CharField(max_length=100)
     detalles = models.TextField(blank=True, null=True)
     tipo = models.CharField(max_length=12, choices=TIPO_PRODUCTO)
@@ -92,7 +92,7 @@ class Producto(models.Model):
     modificadoEn = models.DateTimeField(auto_now=True)
     activo = models.BooleanField(default=True)
     # establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null = True)
+    categoria = models.ManyToManyField(Categoria)
     tags = models.ManyToManyField(Tags)
     puntuacion = models.IntegerField(default=0,null=True)
     vista = models.CharField(max_length=100, default=0)

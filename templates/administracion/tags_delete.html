@@ -1,0 +1,28 @@
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+ Eliminar Tag
+{% endblock %}
+
+
+{% block content%}
+    <div id="tags-delete">
+        <form method="post">
+            {% csrf_token %}
+            <p style="text-align: left; font-size: large">¿Está seguro de eliminar el Tag: <strong>{{ tag.nombre }}</strong>?</p>
+            <button class="btn btn-danger" type="submit">Si, confirmar</button>
+            <a href="{% url 'listar_tags' %}">
+               <input class="btn btn-secondary" type="button" value="Cancelar" />
+            </a>
+        </form>
+    </div>
+{% endblock %}
+
+{% block import_footer %}
+
+{% endblock %}
