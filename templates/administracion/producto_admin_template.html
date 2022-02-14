@@ -22,7 +22,9 @@
 	                <th class="border-top-0">Id</th>
 	                <th class="border-top-0">Descripción</th>
 	                <th class="border-top-0">Precio</th>
-	                <th class="border-top-0">Opciones</th>
+	                <th class="border-top-0">Editar</th>
+	                <th class="border-top-0">Ver</th>
+	                <th class="border-top-0">Eliminar</th>
 	            </tr>
 	        </thead>
 	        <tbody>
@@ -32,33 +34,39 @@
                     <td>{{ producto.descripcion }}</td>
                     <td> s/. {{ producto.precio }} </td>
                     <td>
-                        <!-- Button trigger modal -->
-                        <button id="button-mostrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ producto.pk }}">
-                            Mostrar
+                        <a href="{% url 'editar_producto' pk=producto.pk %}">
+                            <input class="btn btn-primary" type="button" value="Editar">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'ver_producto' pk=producto.pk %}">
+                            <input class="btn btn-primary" type="button" value="Ver">
+                        </a>
+                    </td>
+                    <td>
+                        <button id="boton-mostrar" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ producto.pk }}" data-db="{{ producto.pk }}">
+                              Eliminar
                         </button>
                     </td>
+
                 </tr>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal-{{ producto.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Opciones de Pedido</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Producto: </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <a href="{% url 'editar_producto' pk=producto.pk %}">
-                                        <input class="btn btn-primary" type="button" value="Editar">
-                                    </a>
-                                    <a href="{% url 'ver_producto' pk=producto.pk %}">
-                                        <input class="btn btn-info" type="button" value="Ver">
-                                    </a>
-                                    <a href="{% url 'eliminar_producto' pk=producto.pk %}">
-                                        <input type="button" class="btn btn-danger" value="Eliminar">
-                                    </a>
+                                    <p style="text-align: left; font-size: large">¿Está seguro de eliminar el categoría: <strong>{{ producto.descripcion }}</strong>?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <form action="{% url 'eliminar_producto' pk=producto.pk%}" method="post">
+                                        {% csrf_token %}
+                                         <button class="btn btn-danger" type="submit">Confirmar</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
                         </div>

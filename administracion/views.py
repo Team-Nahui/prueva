@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
 from .models import Producto, Oferta, Categoria, Pedido, Operacion, Tags
 from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm, TagsForm
 from .pedidosOnMap import PedidoLocation
@@ -104,17 +106,9 @@ class ProductoDetailView(View):
         return render(request, 'administracion/producto_detalle.html', contex)
 
 
-class ProductoDeleteView(View):
-    def get(self, request, pk):
-        producto = get_object_or_404(Producto, id=pk)
-        context = {
-            'producto': producto
-        }
-        return render(request, 'administracion/producto_delete.html', context)
-
-    def post(self, request, pk):
-        get_object_or_404(Producto, id=pk).delete()
-        return redirect('listar_productos')
+class ProductoDeleteView(DeleteView):
+    model = Producto
+    success_url = reverse_lazy('listar_productos')
 
 
 class OfertaListView(View):
@@ -203,17 +197,9 @@ class OfertaDetailView(View):
         return render(request, 'administracion/oferta_detalle.html', context)
 
 
-class OfertadeleteView(View):
-    def get(self, request, pk):
-        oferta = get_object_or_404(Oferta, id=pk)
-        context = {
-            'oferta': oferta
-        }
-        return render(request, 'administracion/oferta_delete.html', context)
-
-    def post(self, request, pk):
-        get_object_or_404(Pedido, id=pk).delete()
-        return redirect('listar_pedido')
+class OfertadeleteView(DeleteView):
+    model = Oferta
+    success_url = reverse_lazy('listar_ofertas')
 
 
 class CategoriaListView(View):
@@ -304,21 +290,24 @@ class CagetgoriaDetailView(View):
         return render(request, 'administracion/categoria_detail.html', context)
 
 
-class CategoriaDeleteView(View):
-    def get(self, request, pk):
-        categoria = get_object_or_404(Categoria, id=pk)
-        context = {
-            'categoria': categoria
-        }
-        return render(request, 'administracion/categoria_delete.html', context)
-
-    def post(self, request, pk):
-        get_object_or_404(Categoria, id=pk).delete()
-        return redirect('listar_categoria')
+class CategoriaDeleteView(DeleteView):
+    model = Categoria
+    success_url = reverse_lazy('listar_categoria')
 
 
 class PedidoListView(View):
     def get(self, request):
+        pendind_orders = Pedido.objects.all().filter(estado='pendiente')
+        PedidoLocation.list_peditos_to_empty()
+        for order in pendind_orders:
+            client = order.cliente
+            new_order_to_map = PedidoLocation(order.id,
+                                              order.latitud,
+                                              order.longitud,
+                                              get_hour_to_date(order.hora_pedido),
+                                              f'{client.nombres} {client.apellidos}',
+                                              client.telefono)
+            PedidoLocation.add_pedido(new_order_to_map)
         pedidos_map = PedidoLocation.list_to_json()
         context = {
             'pedidos': Pedido.objects.all(),
@@ -483,7 +472,6 @@ class PedidoPayView(View):
 
 class LocationMarkeronMapView(View):
     def get(self, request, pk):
-        msg = ''
         pedido = get_object_or_404(Pedido, pk=pk)
         pedido_state = check_pedido_state(pedido)
         if pedido_state:
@@ -494,13 +482,12 @@ class LocationMarkeronMapView(View):
             """
             pedido_is_marked = check_pedido_is_marked(pedido)
             cliente = pedido.cliente
-            pedido_url = f'<a href="pedido/{pedido.pk}/ver">Ver pedido<a/>'
             pedido_to_marker = PedidoLocation(pedido.id,
                                               pedido.latitud,
                                               pedido.longitud,
                                               get_hour_to_date(pedido.hora_pedido),
                                               f'{cliente.nombres} {cliente.apellidos}',
-                                              cliente.telefono, pedido_url)
+                                              cliente.telefono)
             if pedido_is_marked:
                 PedidoLocation.set_pedido_in_list(pedido_to_marker)
             else:
@@ -611,17 +598,9 @@ class DetailTagsView(View):
         return render(request, 'administracion/tags_detail.html', context)
 
 
-class DeleteTagsView(View):
-    def get(self, request, pk):
-        tag = get_object_or_404(Tags, id=pk)
-        context = {
-            'tag': tag,
-        }
-        return render(request, 'administracion/tags_delete.html', context)
-
-    def post(self, request, pk):
-        get_object_or_404(Tags, id=pk).delete()
-        return redirect('listar_tags')
+class DeleteTagsView(DeleteView):
+    model = Tags
+    success_url = reverse_lazy('listar_tags')
 
 
 class HomeView(View):

@@ -26,7 +26,6 @@
 	                <th class="border-top-0">Eliminar</th>
 	            </tr>
 	        </thead>
-
 	        <tbody>
                 {% for tag in tags %}
                     <tr>
@@ -43,47 +42,35 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'eliminar_tag' pk=tag.pk %}">
-                                <input class="btn btn-danger" type="button" value="Eliminar">
-                            </a>
+                            <button id="boton-mostrar" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ tag.pk }}" data-db="{{ tag.pk }}">
+                                Eliminar
+                            </button>
                         </td>
-
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal-{{ tag.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Categoría:</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p style="text-align: left; font-size: large">¿Está seguro de eliminar el Tag: <strong>{{ tag.nombre }}</strong>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'eliminar_tag' pk=tag.pk%}" method="post">
+                                            {% csrf_token %}
+                                             <button class="btn btn-danger" type="submit">Confirmar</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </tr>
-
                 {% endfor %}
 	        </tbody>
 	    </table>
-    <script type="text/javascript">
-
-        function  map_setup(map, options){
-            let personalIcon = new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-            });
-
-            let list_pedidos_map = {{ pedidos_map_json|safe }}.pedidos;
-
-
-            let markers = []
-            list_pedidos_map.forEach(pedido => {
-                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Hora: <strong>${pedido.hora_pedido}</strong> <br>
-                                                                                                    Cliente: <strong>${pedido.cliente}</strong> <br>
-                                                                                                    Contecto: <strong>${pedido.contacto_cliente}</strong></p>`))
-                console.log(`Pedido: ${pedido.id}: lat: ${pedido.lat}, lng: ${pedido.lng}`)
-            })
-
-            let pedidosMap = L.layerGroup(markers);
-
-            let overlayMaps = {
-                'Pedidos': pedidosMap
-            }
-            L.control.layers(overlayMaps).addTo(map);
-        }
-    </script>
 	</div>
 {% endblock %}
 

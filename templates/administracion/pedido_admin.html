@@ -79,8 +79,8 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <a href="#">
-                                                <input class="btn btn-primary" type="button" value="Asignar">
+                                            <a href="{% url 'ver_pedido' pk=pedido.pk %}">
+                                                <input class="btn btn-primary" type="button" value="Ver">
                                             </a>
                                             <a href="{% url 'editar_pedido' pk=pedido.pk %}">
                                                 <input class="btn btn-primary" type="button" value="Editar">
@@ -122,7 +122,7 @@
 
             let markers = []
             list_pedidos_map.forEach(pedido => {
-                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Pedido: ${pedido.url_pedido} <br>
+                markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Pedido ${pedido.id}: <a href="${pedido.id}/ver/">Ver pedido</a> <br>
                                                                                                     Hora: <strong>${pedido.hora_pedido}</strong> <br>
                                                                                                     Cliente: <strong>${pedido.cliente}</strong> <br>
                                                                                                     Contecto: <strong>${pedido.contacto_cliente}</strong></p>`))

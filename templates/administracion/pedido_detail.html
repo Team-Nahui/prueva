@@ -1,35 +1,51 @@
-{% extends 'administracion/admin_home.html'%}
-{% block title %}Panel de administracion de Pedidos{% endblock %}
-{% block section %}
-    <h2>Detalles del Pedido</h2>
+{% extends 'administracion/base.html'%}
+
+{% block import_head %}
+
+{% endblock %}
+
+
+{% block title_page%}
+    Detalles de Pedido: {{ pedido.pk }}
+{% endblock %}
+
+
+{% block content%}
     <div id="dedido-detalle">
-        <h3>Fecha del Pedido: {{ pedido.hora_pedido }}</h3>
-        <p>Codigo de tranzaccion: {{ pedido.codigo_transaccion }}</p>
+        <h3 style="text-align: left; font-size: large">Fecha del Pedido: <strong>{{ pedido.hora_pedido }}</strong></h3>
+        <p style="text-align: left; font-size: large">Codigo de tranzaccion: {{ pedido.codigo_transaccion }}</p>
         {% if pedido.pagado is True %}
-            <td>Si</td>
+            <td><p style="text-align: left; font-size: large">Pagado: <strong>Si</strong></p></td>
         {% else %}
-            <td><p>No</p></td>
+            <td><p style="text-align: left; font-size: large">Pagado: <strong>No</strong></p></td>
         {% endif %}
-        <p>Latitud: {{ pedido.latitud }}</p>
-        <p>Longitud: {{ pedido.longitud }}</p>
-        <p>Latitud de origen: {{ pedido.latido_origen }}</p>
-        <p>Longitud de origen: {{ pedido.longitud_origen }}</p>
-        <p>Dirección: {{ pedido.direccion }}</p>
-        <p>Telefono: {{ pedido.telefono }}</p>
-        <p>Evaluación: {{ pedido.evalicacion }}.</p>
-        <p>Estado: {{ pedido.estado }}</p>
-        <p>Fecha de creación: {{ pedido.creadoEn }}</p>
-        <p>Fecha de modificación: {{ pedido.modificadoEn }}</p>
-        <p>Total: {{ pedido.total }}</p>
-        <p>Precio del delivery: {{ pedido.precioDelivery}}</p>
-        <p>Tipo de pago: {{ pedido.tipoPago }}</p>
-        <p>Tipo de documento de pago: {{ pedido.tipoDocpago }}</p>
-        <p>Documento de pago: {{ pedido.docPago }}</p>
-        <p>Productos: {{ pedido.productos }}</p>
+        <p style="text-align: left; font-size: large">Latitud: <strong>{{ pedido.latitud }}</strong></p>
+        <p style="text-align: left; font-size: large">Longitud: <strong>{{ pedido.longitud }}</strong></p>
+        <p style="text-align: left; font-size: large">Latitud de origen: <strong>{{ pedido.latido_origen }}</strong></p>
+        <p style="text-align: left; font-size: large">Longitud de origen: <strong>{{ pedido.longitud_origen }}</strong></p>
+        <p style="text-align: left; font-size: large">Dirección: <strong>{{ pedido.direccion }}</strong></p>
+        <p style="text-align: left; font-size: large">Telefono: <strong>{{ pedido.telefono }}</strong></p>
+        <p style="text-align: left; font-size: large">Evaluación: <strong>{{ pedido.evalicacion }}</strong>.</p>
+        <p style="text-align: left; font-size: large">Estado: <strong>{{ pedido.estado }}</strong></p>
+        <p style="text-align: left; font-size: large">Fecha de creación: <strong>{{ pedido.creadoEn }}</strong></p>
+        <p style="text-align: left; font-size: large">Fecha de modificación: <strong>{{ pedido.modificadoEn }}</strong></p>
+        <p style="text-align: left; font-size: large">Total: <strong>{{ pedido.total }}</strong></p>
+        <p style="text-align: left; font-size: large">Precio del delivery: <strong>{{ pedido.precioDelivery}}</strong></p>
+        <p style="text-align: left; font-size: large">Tipo de pago: <strong>{{ pedido.tipoPago }}</strong></p>
+        <p style="text-align: left; font-size: large">Tipo de documento de pago: <strong>{{ pedido.tipoDocpago }}</strong></p>
+        <p style="text-align: left; font-size: large">Documento de pago: <strong>{{ pedido.docPago }}</strong></p>
+        <p style="text-align: left; font-size: large">Productos: <strong>{{ pedido.productos }}</strong></p>
         {% if pedido.activo is True %}
-            <p>Si</p>
+            <p style="text-align: left; font-size: large">Activo: <strong>Si</strong></p>
         {% else %}
-            <p>No</p>
+            <p style="text-align: left; font-size: large">Activo: <strong>No</strong></p>
         {% endif %}
+        <a href="{% url 'listar_pedido' %}">
+            <input type="button" class="btn btn-primary" value="Volver">
+        </a>
     </div>
+{% endblock %}
+
+{% block import_footer %}
+
 {% endblock %}
