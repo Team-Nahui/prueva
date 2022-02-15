@@ -1,3 +1,4 @@
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DeleteView
@@ -6,6 +7,7 @@ from .models import Producto, Oferta, Categoria, Pedido, Operacion, Tags
 from .forms import ProductoForm, OfertaForm, CategoriaForm, PedidoForm, PedidoEditLocationForm, OperacionForm, TagsForm
 from .pedidosOnMap import PedidoLocation
 from .utilities import check_pedido_state, check_pedido_is_marked, get_hour_to_date
+from django.contrib import messages
 import json
 
 
@@ -35,7 +37,6 @@ class CreateProductoView(View):
         form = ProductoForm
         context = {
             'form': form,
-            'message': '',
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -52,10 +53,9 @@ class CreateProductoView(View):
         if form.is_valid():
             form.save()  # Guarda el objeto producto y me lo devuelves
             form = ProductoForm()
-            success_messages = 'Producto creado con exito!'
+            messages.success(request, 'Producto creado con éxito')
         context = {
             'form': form,
-            'message': success_messages,
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -73,22 +73,19 @@ class EditProductoView(View):
         form = ProductoForm(instance=producto)
         context = {
             'form': form,
-            'message': '',
             'state': 'edit',
             'button_text': 'Guardar cambios'
         }
         return render(request, 'administracion/producto_new_add_template.html', context)
 
     def post(self, request, pk):
-        success_message = ''
         producto = get_object_or_404(Producto, id=pk)
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
-            success_message = 'Actualizacion guardado con exito'
+            messages.success(request, 'Cambios guardados con éxito')
         context = {
             'form': form,
-            'message': success_message,
             'state': 'Edit',
             'button_text': 'Guardar cambios',
         }
@@ -106,9 +103,16 @@ class ProductoDetailView(View):
         return render(request, 'administracion/producto_detalle.html', contex)
 
 
-class ProductoDeleteView(DeleteView):
+class ProductoDeleteView(SuccessMessageMixin, DeleteView):
     model = Producto
     success_url = reverse_lazy('listar_productos')
+    success_message = 'Producto eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        data_to_return = super(ProductoDeleteView, self).delete(request, *args, **kwargs)
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return data_to_return
 
 
 class OfertaListView(View):
@@ -118,7 +122,6 @@ class OfertaListView(View):
         """
         context = {
             'ofertas': Oferta.objects.all(),
-            'message': '',
         }
         return render(request, 'administracion/oferta_admin_template.html', context)
 
@@ -131,7 +134,6 @@ class CreateOfertaView(View):
         form = OfertaForm()
         context = {
             'form': form,
-            'message': '',
             'state': 'create',
             'button_text': 'Crear Oferta',
         }
@@ -141,15 +143,13 @@ class CreateOfertaView(View):
         """
         Crear una nueva oferta y muestra en mensaje
         """
-        success_message = ''
         form = OfertaForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Oferta creado con éxito')
             form = OfertaForm()
-            success_message = 'Guardado con exito!'
         contex = {
             'form': form,
-            'message': success_message,
             'state': 'create',
             'button_text': 'Crear Oferta',
         }
@@ -166,24 +166,21 @@ class EditOfertaView(View):
 
         context = {
             'form': form,
-            'message': '',
             'state': 'edit',
             'button_text': 'Guardar Canmbios',
         }
         return render(request, 'administracion/oferta_create.html', context)
 
     def post(self, request, pk):
-        success_message = ''
         oferta = get_object_or_404(Oferta, id=pk)
         form = OfertaForm(request.POST, instance=oferta)
         if form.is_valid():
             form.save()
-            success_message = 'Actualizacion guardado con exito'
+            messages.success(request, 'Cambios guardado con éxito')
         context = {
             'form': form,
-            'message': success_message,
             'state': 'edit',
-            'button_text': 'Guardar Canmbios',
+            'button_text': 'Guardar Cambios',
         }
         return render(request, 'administracion/oferta_create.html', context)
 
@@ -197,9 +194,16 @@ class OfertaDetailView(View):
         return render(request, 'administracion/oferta_detalle.html', context)
 
 
-class OfertadeleteView(DeleteView):
+class OfertadeleteView(SuccessMessageMixin, DeleteView):
     model = Oferta
     success_url = reverse_lazy('listar_ofertas')
+    success_message = 'Oferta eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        data_to_return = super(OfertadeleteView, self).delete(request, *args, **kwargs)
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return data_to_return
 
 
 class CategoriaListView(View):
@@ -209,7 +213,6 @@ class CategoriaListView(View):
         """
         context = {
             'categorias': Categoria.objects.all(),
-            'message': ''
         }
         return render(request, 'administracion/categoria_admin.html', context)
 
@@ -220,7 +223,6 @@ class CategoriaCreateView(View):
         form = CategoriaForm()
         context = {
             'form': form,
-            'message': '',
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -230,16 +232,14 @@ class CategoriaCreateView(View):
         """
         crear una categoria y lo guarda
         """
-        success_message = ''
         form = CategoriaForm(request.POST)
         if form.is_valid():
             form.save()
             form = CategoriaForm()
-            success_message = 'Categoria creada con exito'
+            messages.success(request, 'Categoría creado con éxito')
 
         context = {
             'form': form,
-            'message': success_message,
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -252,7 +252,6 @@ class CategoriaEditView(View):
         form = CategoriaForm(instance=get_object_or_404(Categoria, id=pk))
         context = {
             'form': form,
-            'message': '',
             'state': 'edit',
             'button_text': 'Guardar cambios',
         }
@@ -262,16 +261,14 @@ class CategoriaEditView(View):
         """
         Edita una categoria y lo guarda
         """
-        success_message = ''
         categoria = get_object_or_404(Categoria, id=pk)
         form = CategoriaForm(request.POST, instance=categoria)
         if form.is_valid():
             form.save()
-            success_message = 'Actualizacion cuardado con exito'
+            messages.success(request, 'Cambios guardado con éxito')
 
         context = {
             'form': form,
-            'message': success_message,
             'state': 'edit',
             'button_text': 'Guardar cambios',
         }
@@ -290,9 +287,16 @@ class CagetgoriaDetailView(View):
         return render(request, 'administracion/categoria_detail.html', context)
 
 
-class CategoriaDeleteView(DeleteView):
+class CategoriaDeleteView(SuccessMessageMixin, DeleteView):
     model = Categoria
     success_url = reverse_lazy('listar_categoria')
+    success_message = 'Categoría eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        data_to_return = super(CategoriaDeleteView, self).delete(request, *args, **kwargs)
+        messages.success(self.request, self.success_message % obj.__dict__)
+        return data_to_return
 
 
 class PedidoListView(View):
@@ -323,7 +327,6 @@ class PedidoCreateView(View):
         form = PedidoForm()
         context = {
             'form': form,
-            'message': '',
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -333,16 +336,14 @@ class PedidoCreateView(View):
         """
         crear un pedido y lo guarda
         """
-        success_message = ''
         form = PedidoForm(request.POST)
         if form.is_valid():
             form.save()
             form = PedidoForm()
-            success_message = 'Pedido creado con exito'
+            messages.success(request, 'Pedido creado con éxito')
 
         context = {
             'form': form,
-            'message': success_message,
             'state': 'create',
             'button_text': 'Agregar',
         }
@@ -355,7 +356,6 @@ class PedidoEditView(View):
         form = PedidoForm(instance=get_object_or_404(Pedido, id=pk))
         context = {
             'form': form,
-            'message': '',
             'state': 'edit',
             'button_text': 'Guardar cambios',
         }
@@ -365,16 +365,14 @@ class PedidoEditView(View):
         """
         Edita una categoria y lo guarda
         """
-        success_message = ''
         pedido = get_object_or_404(Pedido, id=pk)
         form = PedidoForm(request.POST, instance=pedido)
         if form.is_valid():
             form.save()
-            success_message = 'Cambios cuardado con exito'
+            messages.success(request, 'Cambios gurado con éxito')
 
         context = {
             'form': form,
-            'message': success_message,
             'state': 'edit',
             'button_text': 'Guardar cambios',
         }
@@ -410,12 +408,21 @@ class PedidoDeleteView(View):
 class PedidoEditLocationView(View):
     def get(self, request, pk):
         """ Muestra el formulario para categoria"""
-        form = PedidoEditLocationForm(instance=get_object_or_404(Pedido, id=pk))
+        pedido = get_object_or_404(Pedido, id=pk)
+        cliente = pedido.cliente
+        form = PedidoEditLocationForm(instance=pedido)
         # Agregamos la locacion del pedido a la lista de pedidos a mostrar en el map
+        pedido_to_marker = PedidoLocation(pedido.id,
+                                          pedido.latitud,
+                                          pedido.longitud,
+                                          get_hour_to_date(pedido.hora_pedido),
+                                          f'{cliente.nombres} {cliente.apellidos}',
+                                          cliente.telefono)
         context = {
             'form': form,
-            'pedido': get_object_or_404(Pedido, pk=pk),
-            'message': '',
+            'pedido': pedido,
+            'pedido_json': pedido_to_marker.to_json()
+
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
 
@@ -423,17 +430,15 @@ class PedidoEditLocationView(View):
         """
         Edita una categoria y lo guarda
         """
-        success_message = ''
         pedido = get_object_or_404(Pedido, id=pk)
         form = PedidoEditLocationForm(request.POST, instance=pedido)
         if form.is_valid():
             form.save()
-            success_message = 'Cambios cuardado con éxito'
+            messages.success(request, 'Cambios guardado con exito')
 
         context = {
             'form': form,
             'pedido': get_object_or_404(Pedido, pk=pk),
-            'message': success_message,
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
 
@@ -444,7 +449,6 @@ class PedidoPayView(View):
         form = OperacionForm()
         context = {
             'form': form,
-            'message': '',
         }
         return render(request, 'administracion/pedido_pay.html', context)
 
@@ -452,7 +456,6 @@ class PedidoPayView(View):
         """
         Edita una categoria y lo guarda
         """
-        success_message = ''
         pedido = get_object_or_404(Pedido, pk=pk)
         operacion_with_pedido = Operacion()
         operacion_with_pedido.pedido = pedido
@@ -461,11 +464,10 @@ class PedidoPayView(View):
             form.save()
             pedido.pagado = True
             pedido.save()
-            success_message = 'Pedido pagado y Operacion guardado con éxito'
+            messages.success(request, 'Pedido pagado y Operacion guardado con éxito')
 
         context = {
             'form': form,
-            'message': success_message,
         }
         return render(request, 'administracion/pedido_pay.html', context)
 
@@ -492,8 +494,10 @@ class LocationMarkeronMapView(View):
                 PedidoLocation.set_pedido_in_list(pedido_to_marker)
             else:
                 PedidoLocation.add_pedido(pedido_to_marker)
+            messages.info(request, 'Pedio marcado en el mapa')
             return redirect('listar_pedido')
         else:
+            messages.error(request, f'No se puede hacer el seguimiento de un pedido con estado: {pedido.estado}')
             return redirect('editar_pedido', pk)
 
 

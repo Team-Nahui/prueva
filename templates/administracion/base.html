@@ -237,6 +237,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="white-box">
+                            {% include 'administracion/messages.html' %}
                             {% block content %}
 
                             {% endblock %}
@@ -271,6 +272,13 @@
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
     </div>
+    <script>
+        setTimeout(function (){
+            if($('#msg').length > 0){
+                $('#msg').remove();
+            }
+        },3000)
+    </script>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->

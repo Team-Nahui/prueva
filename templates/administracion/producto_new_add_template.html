@@ -15,7 +15,6 @@
 
 
 {% block content%}
-    {% if message %} <span style="color: green">{{ message|safe }}</span> {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}

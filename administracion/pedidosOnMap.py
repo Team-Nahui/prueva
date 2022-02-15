@@ -10,7 +10,7 @@ class PedidoLocation:
         self.latitud = lat_pedido
         self.longitud = long_pedido
         self.hora_pedido = hora_pedido
-        self.cliente = cliente,
+        self.cliente = cliente
         self.contacto_cliente = contacto_cliente
 
     @classmethod
@@ -77,4 +77,15 @@ class PedidoLocation:
             json_list = {'pedidos': data}
 
         return json_list
+
+    def to_json(self):
+        pedido_json = {
+            'id': self.id,
+            'lat': self.latitud,
+            'lng': self.longitud,
+            'hora_pedido': self.hora_pedido,
+            'cliente': self.cliente,
+            'contacto_cliente': self.contacto_cliente,
+        }
+        return {'pedido': pedido_json}
 

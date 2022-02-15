@@ -16,8 +16,8 @@
     </div>
     <div>
     <ul>
-    {% for athlete in pedidos_map %}
-        <li>{{ athlete.id }}</li>
+    {% for pedido in pedidos_map %}
+        <li>{{ pedido.id }}</li>
     {% endfor %}
     </ul>
     </div>
@@ -125,16 +125,10 @@
                 markers.push(L.marker([pedido.lat, pedido.lng], {icon: personalIcon}).bindPopup(`<p>Pedido ${pedido.id}: <a href="${pedido.id}/ver/">Ver pedido</a> <br>
                                                                                                     Hora: <strong>${pedido.hora_pedido}</strong> <br>
                                                                                                     Cliente: <strong>${pedido.cliente}</strong> <br>
-                                                                                                    Contecto: <strong>${pedido.contacto_cliente}</strong></p>`))
-                console.log(`Pedido: ${pedido.id}: lat: ${pedido.lat}, lng: ${pedido.lng}`)
+                                                                                                    Contecto: <strong>${pedido.contacto_cliente}</strong></p>`).addTo(map))
+
             })
 
-            let pedidosMap = L.layerGroup(markers);
-
-            let overlayMaps = {
-                'Pedidos': pedidosMap
-            }
-            L.control.layers(overlayMaps).addTo(map);
         }
     </script>
 	</div>

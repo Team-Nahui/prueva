@@ -1,5 +1,5 @@
 {% extends 'administracion/base.html'%}
-
+{% load leaflet_tags %}
 {% block import_head %}
 
 {% endblock %}
@@ -29,7 +29,57 @@
                 <input class="btn btn-secondary" type="button" value="Canlelar">
             </a>
         </div>
+        {% leaflet_map "mapa_pedido_editar" callback="window.map_setup_location"%}
+        <style>
+
+            .leaflet-container {  /* all maps */
+                width:  100%;
+                height: 600px;
+            }
+
+            #specialbigmap {
+                height: 800px;
+            }
+
+            /* Resize the "display_raw" textbox */
+            .django-leaflet-raw-textarea {
+                width: 100%;
+            }
+
+        </style>
     </form>
+    <script>
+    function  map_setup_location(map, options){
+        let personalIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+        let pedido_map = {{ pedido_json|safe }}.pedido;
+        let myMarker = L.marker([pedido_map.lat, pedido_map.lng], {icon: personalIcon, draggable: true})
+            .bindPopup(`<p>Pedido ${pedido_map.id}: <a href="${pedido_map.id}/ver/">Ver pedido</a> <br>
+                        Hora: <strong>${pedido_map.hora_pedido}</strong> <br>
+                        Cliente: <strong>${pedido_map.cliente}</strong> <br>
+                        Contecto: <strong>${pedido_map.contacto_cliente}</strong></p>`)
+            .addTo(map)
+            .on('dragend', function() {
+                let coord = String(myMarker.getLatLng()).split(',');
+                let lat = coord[0].split('(');
+                let lng = coord[1].split(')');
+                myMarker.bindPopup(`<p>
+                                        <b>Nuevas coordenadas:</b><br>
+                                        Latitud: <b>${lat[1]}</b><br>
+                                        Longitud: <b>${lng[0]}</b>
+                                    </p>`);
+                
+		    })
+
+
+        }
+    </script>
 {% endblock %}
 
 {% block import_footer %}
