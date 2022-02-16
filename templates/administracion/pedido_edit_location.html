@@ -66,6 +66,8 @@
                         Contecto: <strong>${pedido_map.contacto_cliente}</strong></p>`)
             .addTo(map)
             .on('dragend', function() {
+                const latitud = document.querySelector('#id_latitud');
+                const longitud = document.querySelector('#id_longitud');
                 let coord = String(myMarker.getLatLng()).split(',');
                 let lat = coord[0].split('(');
                 let lng = coord[1].split(')');
@@ -74,7 +76,10 @@
                                         Latitud: <b>${lat[1]}</b><br>
                                         Longitud: <b>${lng[0]}</b>
                                     </p>`);
-                
+                latitud.value = lat[1];
+                longitud.value = lng[0];
+
+
 		    })
 
 

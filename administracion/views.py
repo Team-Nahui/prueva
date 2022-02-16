@@ -432,13 +432,21 @@ class PedidoEditLocationView(View):
         """
         pedido = get_object_or_404(Pedido, id=pk)
         form = PedidoEditLocationForm(request.POST, instance=pedido)
+        cliente = pedido.cliente
+        pedido_to_marker = PedidoLocation(pedido.id,
+                                          pedido.latitud,
+                                          pedido.longitud,
+                                          get_hour_to_date(pedido.hora_pedido),
+                                          f'{cliente.nombres} {cliente.apellidos}',
+                                          cliente.telefono)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cambios guardado con exito')
 
         context = {
             'form': form,
-            'pedido': get_object_or_404(Pedido, pk=pk),
+            'pedido': pedido,
+            'pedido_json': pedido_to_marker.to_json(),
         }
         return render(request, 'administracion/pedido_edit_location.html', context)
 
